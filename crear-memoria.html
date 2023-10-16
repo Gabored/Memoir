@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Memoir - Crear Memoria</title>
+</head>
+<body>
+    <div class="main-content">
+        <h1>Crear Memoria</h1>
+        <form class="crear-memoria-form">
+            <label for="titulo"></label>
+            <input type="text" id="titulo" name="titulo" required placeholder="Añade un título a tu memoria... :)">
+            
+            <label for="descripcion"></label>
+            <input type="text" id="descripcion" name="descripcion" required placeholder="Cuéntanos más de esa experiencia...">
+            
+            <div class="hashtag-container">
+                <label for="hashtag">#</label>
+                <input type="text" id="hashtag" name="hashtag" placeholder="Crear hashtag" class="hashtag-input">
+            </div>
+
+            <div class="hashtags">
+                <!-- Los hashtags creados se mostrarán aquí -->
+            </div>
+            
+            <label for="imagen" class="custom-file-upload">
+                <div class="custom-file-select">
+                    <img src="camara.png" alt="Agregar fotos">
+                    <span>Seleccionar del ordenador</span>
+                </div>
+                <input type="file" id="imagen" name="imagen" accept="image/*" multiple>
+            </label>
+            
+            <label for="video" class="custom-file-upload">
+                <div class="custom-file-select">
+                    <img src="camara-de-video.png" alt="Agregar videos">
+                    <span>Seleccionar del ordenador</span>
+                </div>
+                <input type="file" id="video" name="video" accept="video/*" multiple>
+            </label>
+            
+            <label for="audio" class="custom-file-upload">
+                <div class="custom-file-select">
+                    <img src="audio.png" alt="Crear audio">
+                    <span>Seleccionar del ordenador</span>
+                </div>
+                <input type="file" id="audio" name="audio" accept="audio/*">
+            </label>            
+
+            <label for="microfono" class="custom-file-upload">
+                <div class="custom-file-select">
+                    <img src="microfono.png" alt="Crear audio">
+                    <span>Grabar audio</span>
+                </div>
+                <input type="file" id="microfono" name="microfono" accept="audio/*" multiple>
+            </label>           
+
+            <button type="submit" class="compartir-button">Compartir</button>
+        </form>
+    </div>
+</body>
+</html>
