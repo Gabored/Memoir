@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memoir Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style-login.css">
 </head>
-<body style="background-image: url('https://images.unsplash.com/photo-1507539989371-99615e449486?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YmVhY2glMjBmcmllbmRzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60'); background-size: cover; display: flex; justify-content: center; align-items: center; height: 100vh;">
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;">
+    <video autoplay muted loop id="background-video">
+        <source src="media\login.mp4" type="video/mp4">
+    </video>
     <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-md-6 login-form">
@@ -22,15 +26,15 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
-                    <p class="text-center">Don't have an account? <a href="signup.html">Sign Up</a></p>
+                    
+                    <p class="text-center">Don't have an account? <a href="signup.html">Register</a></p>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="text-center fixed-bottom bg-light">
+    <footer class="text-center fixed-bottom bg-grey">
         <p>&copy; 2023 Memoir, Inc</p>
         <p>Authors: Gabriel Alejandro Olvera González, Marian Montserrat Sedano Paz</p>
     </footer>
 </body>
 </html>
-
