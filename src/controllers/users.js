@@ -5,7 +5,7 @@ class UsersController { // estructura para que puedas hacer varios metodos
     ver(req, res) {
         const id = req.params.id;
         const usuario = ids[id];
-        //console.log(usuarios[id]);
+        console.log(usuarios[id]);
         if(usuario) {
             res.send(usuario);
         } else { 
