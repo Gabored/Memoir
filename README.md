@@ -1,2 +1,0 @@
-# Memoir
-Memoir Web Project 
