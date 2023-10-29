@@ -1,0 +1,24 @@
+{
+  "name": "memoir",
+  "version": "1.0.0",
+  "description": "memoir back end",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "dev" : "nodemon .",
+    "start" : "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabored/Memoir.git#backEnd"
+  },
+  "author": "Marian Sedano, Gabriel Olvera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gabored/Memoir/issues"
+  },
+  "homepage": "https://github.com/Gabored/Memoir/tree/backEnd#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
