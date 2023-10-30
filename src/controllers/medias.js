@@ -1,20 +1,20 @@
-const Memoria = require('./../models/memoria');
+const Media = require('./../models/media');
 
-class MemoriasController { // estructura para que puedas hacer varios metodos 
+class MediasController { // estructura para que puedas hacer varios metodos 
 
     ver(req, res) {
         const id = req.params.id;
-        const memoria = ids[id];
-        console.log(memorias[id]);
-        if(memoria) {
-            res.send(memoria);
+        const media = ids[id];
+        console.log(medias[id]);
+        if(media) {
+            res.send(media);
         } else { 
             res.sendStatus(404);
         }
     }
     
     listar(req, res) {
-        Memoria.find().then(response => {
+        Media.find().then(response => {
           console.log('Respuesta: ', response);
           res.send(response);
         }).catch(e =>{
@@ -24,17 +24,17 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
     }
 
     crear(req, res) {
-        res.send(memorias[0]);
+        res.send(medias[0]);
     }
 
     editar(req, res) {
-        res.send(memorias[0]);
+        res.send(medias[0]);
     }
 
     eliminar(req, res) {
-        res.send(memorias[0]);
+        res.send(medias[0]);
     }
 
 }
 
-module.exports = new MemoriasController();
+module.exports = new MediasController();

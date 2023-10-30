@@ -1,4 +1,4 @@
-const memorias = require("../controllers/users");
+const memorias = require("../controllers/memorias");
 
 const {model, Schema } = require('mongoose');
 

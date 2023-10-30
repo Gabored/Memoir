@@ -1,20 +1,20 @@
-const Memoria = require('./../models/memoria');
+const Hashtag = require('./../models/hashtag');
 
-class MemoriasController { // estructura para que puedas hacer varios metodos 
+class HashtagsController { // estructura para que puedas hacer varios metodos 
 
     ver(req, res) {
         const id = req.params.id;
-        const memoria = ids[id];
-        console.log(memorias[id]);
-        if(memoria) {
-            res.send(memoria);
+        const hashtag = ids[id];
+        console.log(hashtags[id]);
+        if(hashtag) {
+            res.send(hashtag);
         } else { 
             res.sendStatus(404);
         }
     }
     
     listar(req, res) {
-        Memoria.find().then(response => {
+        Hashtag.find().then(response => {
           console.log('Respuesta: ', response);
           res.send(response);
         }).catch(e =>{
@@ -24,17 +24,17 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
     }
 
     crear(req, res) {
-        res.send(memorias[0]);
+        res.send(hashtags[0]);
     }
 
     editar(req, res) {
-        res.send(memorias[0]);
+        res.send(hashtags[0]);
     }
 
     eliminar(req, res) {
-        res.send(memorias[0]);
+        res.send(hashtags[0]);
     }
 
 }
 
-module.exports = new MemoriasController();
+module.exports = new HashtagsController();

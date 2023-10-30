@@ -7,7 +7,6 @@ const routes = require('./routes');
 
 const app = express();
 
-
 const mongoose = require('mongoose');
 
 const mongoUrl = 'mongodb+srv://mariansedano:1D5Hliam@cluster0.fqg0t96.mongodb.net/memoir?retryWrites=true&w=majority'

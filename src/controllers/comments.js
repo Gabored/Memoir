@@ -1,20 +1,20 @@
-const Memoria = require('./../models/memoria');
+const Comment = require('./../models/comment');
 
-class MemoriasController { // estructura para que puedas hacer varios metodos 
+class CommentsController { // estructura para que puedas hacer varios metodos 
 
     ver(req, res) {
         const id = req.params.id;
-        const memoria = ids[id];
-        console.log(memorias[id]);
-        if(memoria) {
-            res.send(memoria);
+        const comment = ids[id];
+        console.log(comments[id]);
+        if(comment) {
+            res.send(comment);
         } else { 
             res.sendStatus(404);
         }
     }
     
     listar(req, res) {
-        Memoria.find().then(response => {
+        Comment.find().then(response => {
           console.log('Respuesta: ', response);
           res.send(response);
         }).catch(e =>{
@@ -24,17 +24,17 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
     }
 
     crear(req, res) {
-        res.send(memorias[0]);
+        res.send(comments[0]);
     }
 
     editar(req, res) {
-        res.send(memorias[0]);
+        res.send(comments[0]);
     }
 
     eliminar(req, res) {
-        res.send(memorias[0]);
+        res.send(comments[0]);
     }
 
 }
 
-module.exports = new MemoriasController();
+module.exports = new CommentsController();
