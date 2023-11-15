@@ -24,6 +24,12 @@ Be sure to have Mongoose and Express included using
 
 
 ```
-npm install mongoose
+
+npm init
 npm install express
+npm install mongoose
+npm install -D nodemon
+npm install dotenv
+npm install jsonwebtoken
+
 ```

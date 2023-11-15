@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const express = require('express');
 const authMiddleware = require('./../src/middlewares/auth');
 const usersController = require('./../src/controllers/users');
 const memoriasController = require('./../src/controllers/memorias');
@@ -6,8 +7,15 @@ const commentsController = require('./../src/controllers/comments');
 const reactionsController = require('./../src/controllers/reactions');
 const mediasController = require('./../src/controllers/medias');
 const hashtagsController = require('./../src/controllers/hashtags');
+const loginController = require('./../src/controllers/login');
 
-router.get('/users', authMiddleware);
+router.use(express.json());
+
+// Auth
+router.get('/login', loginController.login);
+
+// User
+//router.get('/users', authMiddleware);
 // CRUD USERS
 router.get('/users', usersController.listar);
 router.get('/users/:id', usersController.ver);

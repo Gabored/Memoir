@@ -1,11 +1,22 @@
-const authMiddleware = (req, res, next) => {
-    const token = req.query.token;
+const jwt = require('jsonwebtoken');
 
-    if(token === '123'){
-        next();
-    } else {
-        res.status(401).send('No te has logueado')   
+const secretKey = process.env.SECRET_KEY;
+
+const authMiddleware = (req, res, next) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).send({ msg: 'No se proporcionó el token de autenticación' });
     }
-}
+
+    jwt.verify(token, secretKey, (err, decode) => {
+        if (err) {
+            return res.status(401).send({ msg: 'Token de autenticación inválido' });
+        } else {
+            req.user = decode;
+            next();
+        }
+    });
+};
 
 module.exports = authMiddleware;
