@@ -31,6 +31,9 @@ npm install mongoose
 npm install -D nodemon
 npm install dotenv
 npm install jsonwebtoken
+npm install multer
+npm install cors
+
 
 npm install body-parser
 npm install bcrypt
