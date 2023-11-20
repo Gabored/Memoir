@@ -32,4 +32,8 @@ npm install -D nodemon
 npm install dotenv
 npm install jsonwebtoken
 
+npm install body-parser
+npm install bcrypt
+
+
 ```

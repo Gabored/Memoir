@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const express = require('express');
-const authMiddleware = require('./../src/middlewares/auth');
 const usersController = require('./../src/controllers/users');
 const memoriasController = require('./../src/controllers/memorias');
 const commentsController = require('./../src/controllers/comments');
@@ -9,17 +8,27 @@ const mediasController = require('./../src/controllers/medias');
 const hashtagsController = require('./../src/controllers/hashtags');
 const loginController = require('./../src/controllers/login');
 
+const authMiddleware = require('./../src/middlewares/auth');
+const file = require('./../src/middlewares/file');
+
 router.use(express.json());
 
 // Auth
 router.get('/login', loginController.login);
+
+// Signup
+router.post('/users', usersController.crear);
+
+// Uploads
+router.post('/memorias/:id/upload', file.single('file'), memoriasController.upload);
+router.get('/memorias/:id/upload', memoriasController.attachments);
 
 // User
 //router.get('/users', authMiddleware);
 // CRUD USERS
 router.get('/users', usersController.listar);
 router.get('/users/:id', usersController.ver);
-router.post('/users', usersController.crear);
+//router.post('/users', usersController.crear);
 router.put('/users/:id', usersController.editar);
 router.delete('/users/:id', usersController.eliminar);
 

@@ -1,4 +1,5 @@
 const User = require('./../models/user');
+const bcrypt = require('bcrypt');
 
 class UsersController {
 
@@ -38,25 +39,29 @@ class UsersController {
     // Crear un nuevo usuario
     crear(req, res) {
         // Obtiene los datos del usuario del cuerpo de la solicitud
-        const { name, surname, username, password, email, location, interests, role } = req.body;
+        const { name, surname, username, password, email, location, interests } = req.body;
+
+         // Hasheo de la contraseña antes de almacenarla en la base de datos
+         const hashedPassword = bcrypt.hashSync(password, 10);
 
         // Crea una nueva instancia de User usando el modelo
         const newUser = new User({
             name,
             surname,
             username,
-            password,
+            password: hashedPassword,
             email,
             location,
             interests,
-            role
         });
 
         // Guarda el nuevo usuario en la base de datos
         newUser.save()
             .then(savedUser => {
                 // Devuelve el usuario recién creado como respuesta
-                res.send(savedUser);
+                // res.send(savedUser);
+                // Enviar una respuesta de redirección
+                res.redirect('/front/index.html');
             })
             .catch(error => {
                 console.error('Error al crear un nuevo usuario', error);
