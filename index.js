@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 
+const $ = require('jquery');
+
 require('dotenv').config();
 
 const userRoutes = require('./routes/index'); // Asegúrate de ajustar la ruta correcta
@@ -56,3 +58,34 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => {
         console.log('Unable to connect to the database', err);
     });
+
+// Crear usuario
+function fetchUsers() {
+    $.ajax({
+        url: 'http://localhost:5001/users',
+        method: 'POST',
+        dataType: 'json',
+        success: function (users) {
+            const userListDiv = $('#userList');
+            userListDiv.empty();
+
+            $.each(users, function (index, user) {
+                const userDiv = $('<div>');                 
+                userDiv.html(`                     
+                    <p>Name: ${user.name}</p>                     
+                    <p>Email: ${user.email}</p> 
+                    <hr> 
+                    `);                 
+                    userListDiv.append(userDiv);             
+                });         
+            },         
+            error: function (error) {             
+                console.error('Error fetching users:', error);         
+            }     
+        }); 
+    } 
+    
+    // Call the fetchUsers function when the document is ready or as needed
+    //$(document).ready(function () {     
+    //    fetchUsers(); 
+    //});

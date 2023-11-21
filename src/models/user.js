@@ -10,7 +10,6 @@ const userSchema = new Schema({
     email: {type: String, require: true},
     location: {type: String},
     interests: {type: String, require: true},
-    role: {type: String, default: 'user' }
 })
 
 module.exports = model('users', userSchema);
