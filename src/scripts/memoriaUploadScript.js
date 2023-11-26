@@ -1,6 +1,6 @@
 $(function(){
     const $form = $('form').eq(0);
-    const $button = $('#submit').first();
+    const $button = $('#submit1').first();
     const fileInput = $('input[name="archivo"]')[0];
 
     let archivoSeleccionado = null;
