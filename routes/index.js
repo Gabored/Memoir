@@ -3,7 +3,6 @@ const express = require('express');
 const usersController = require('./../src/controllers/users');
 const memoriasController = require('./../src/controllers/memorias');
 const commentsController = require('./../src/controllers/comments');
-const reactionsController = require('./../src/controllers/reactions');
 const mediasController = require('./../src/controllers/medias');
 const hashtagsController = require('./../src/controllers/hashtags');
 const loginController = require('./../src/controllers/login');
@@ -47,14 +46,6 @@ router.get('/comments/:id', commentsController.ver);
 router.post('/comments', commentsController.crear);
 router.put('/comments/:id', commentsController.editar);
 router.delete('/comments/:id', commentsController.eliminar);
-
-router.get('/reactions', authMiddleware);
-// CRUD REACTIONS
-router.get('/reactions', reactionsController.listar);
-router.get('/reactions/:id', reactionsController.ver);
-router.post('/reactions', reactionsController.crear);
-router.put('/reactions/:id', reactionsController.editar);
-router.delete('/reactions/:id', reactionsController.eliminar);
 
 router.get('/medias', authMiddleware);
 // CRUD MEDIAS
