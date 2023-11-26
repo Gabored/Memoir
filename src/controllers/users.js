@@ -59,9 +59,9 @@ class UsersController {
         newUser.save()
             .then(savedUser => {
                 // Devuelve el usuario recién creado como respuesta
-                // res.send(savedUser);
+                res.send(savedUser);
                 // Enviar una respuesta de redirección
-                res.redirect('/front/index.html');
+                //res.redirect('/front/index.html');
             })
             .catch(error => {
                 console.error('Error al crear un nuevo usuario', error);

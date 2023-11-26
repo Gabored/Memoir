@@ -3,7 +3,7 @@
 // Fetch all users
 function fetchUsers() {
     $.ajax({
-        url: 'http://localhost:5001/users?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlamVtcGxvQGVtYWlsLmNvbSIsImlhdCI6MTcwMDUzMDc3NX0.BIpAXJdmypCdyx2Sohcjn4zsnDn7KmGaugnhxzZWyHs', // Endpoint to fetch all users
+        url: 'http://localhost:5001/users', // Endpoint to fetch all users
         method: 'GET',
         dataType: 'json',
         success: function (users) {

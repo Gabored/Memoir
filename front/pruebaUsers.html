@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Lista de Usuarios</h1>
+    <div id="user-list"></div>
+
+    <script>
+        $(function(){
+            $.ajax({
+                url: 'http://localhost:5001/users',
+                type: 'GET',
+                success: (data) => {
+                    let html = '<ul>';
+                    data.forEach(user => {
+                        html += `<li>${user.name} - ${user.email}</li>`;
+                    });
+                    html += '</ul>';
+                    $('#user-list').html(html);
+                },
+                error: () => {
+                    console.error('Error al obtener la lista de usuarios');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

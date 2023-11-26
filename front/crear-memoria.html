@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style-index.css">
     <title>Memoir - Crear Memoria</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="main-content">
@@ -30,7 +31,8 @@
                     <img src="..\media\camara.png" alt="Agregar fotos">
                     <span>Seleccionar del ordenador</span>
                 </div>
-                <input type="file" id="imagen" name="imagen" accept="image/*" multiple>
+                <input type="file" id="imagen" name="archivo" accept="image/*" multiple>
+                <button id="submit" disabled>Enviar</button>
             </label>
             
             <label for="video" class="custom-file-upload">
@@ -60,5 +62,6 @@
             <button type="submit" class="compartir-button">Compartir</button>
         </form>
     </div>
+    <script src=".\..\scripts\memoriaUploadScript.js"></script>
 </body>
 </html>
