@@ -1,4 +1,4 @@
-const multer = require('multer');
+/* const multer = require('multer');
 
 const validExtensions = ['jpg', 'jpeg', 'png']
 
@@ -22,4 +22,4 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({storage, fileFilter });
 
-module.exports = upload;
+module.exports = upload; */

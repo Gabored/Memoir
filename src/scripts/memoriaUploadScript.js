@@ -1,7 +1,7 @@
 $(function(){
     const $form = $('form').eq(0);
     const $button = $('#submit1').first();
-    const fileInput = $('input[name="archivo"]')[0];
+    const fileInput = $('input[name="foto"]')[0];
 
     let archivoSeleccionado = null;
     
@@ -17,7 +17,7 @@ $(function(){
 
         if(archivoSeleccionado){
             const form = new FormData();
-            form.append('archivo', archivoSeleccionado);
+            form.append('foto', archivoSeleccionado);
 
             $.ajax({
                 url: 'http://localhost:5001/upload',

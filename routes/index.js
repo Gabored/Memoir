@@ -8,7 +8,7 @@ const hashtagsController = require('./../src/controllers/hashtags');
 const loginController = require('./../src/controllers/login');
 
 const authMiddleware = require('./../src/middlewares/auth');
-const file = require('./../src/middlewares/file');
+//const file = require('./../src/middlewares/file');
 
 router.use(express.json());
 
@@ -19,8 +19,8 @@ router.get('/login', loginController.login);
 router.post('/users', usersController.crear);
 
 // Uploads
-router.post('/memorias/:id/upload', file.single('file'), memoriasController.upload);
-router.get('/memorias/:id/upload', memoriasController.attachments);
+//router.post('/memorias/:id/upload', file.single('file'), memoriasController.upload);
+//router.get('/memorias/:id/upload', memoriasController.medias);
 
 // User
 //router.get('/users', authMiddleware);
@@ -31,10 +31,10 @@ router.get('/users/:id', usersController.ver);
 router.put('/users/:id', usersController.editar);
 router.delete('/users/:id', usersController.eliminar);
 
-router.get('/memorias', authMiddleware);
+//router.get('/memorias', authMiddleware);
 // CRUD MEMORIAS
 router.get('/memorias', memoriasController.listar);
-router.get('/memorias/:id', memoriasController.ver);
+router.get('/memorias/search/:name', memoriasController.search);
 router.post('/memorias', memoriasController.crear);
 router.put('/memorias/:id', memoriasController.editar);
 router.delete('/memorias/:id', memoriasController.eliminar);

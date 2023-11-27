@@ -7,15 +7,17 @@ const file = require('./../models/file');
 
 class MemoriasController { // estructura para que puedas hacer varios metodos 
 
-    ver(req, res) {
-        const id = req.params.id;
-        const memoria = ids[id];
-        console.log(memorias[id]);
-        if(memoria) {
-            res.send(memoria);
-        } else { 
-            res.sendStatus(404);
-        }
+    // Filter memorias by name
+    search(req, res) {
+        const name = req.params.name;
+        Hashtag.find({ name: new RegExp(name, 'i') })
+            .then(hashtags => {
+                res.send(hashtags);
+            })
+            .catch(error => {
+                console.error('Error al buscar los hashtags', error);
+                res.sendStatus(500);
+            });
     }
     
     listar(req, res) {
@@ -58,7 +60,7 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
         });
     }
 
-    attachments(req, res){
+    medias(req, res){
         file.find({
             todoId: req.params.id
         }).then(response => {
