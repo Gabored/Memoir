@@ -91,7 +91,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     });
 
 // Crear usuario
-function fetchUsers() {
+/* function fetchUsers() {
     $.ajax({
         url: 'http://localhost:5001/users',
         method: 'POST',
@@ -119,4 +119,4 @@ function fetchUsers() {
     // Call the fetchUsers function when the document is ready or as needed
     //$(document).ready(function () {     
     //    fetchUsers(); 
-    //});
+    //}); */
