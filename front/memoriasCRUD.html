@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Memorias</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        .memoria-img {
+            width: 50px; /* Ajusta este valor al tamaño que desees */
+            height: auto;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Memorias</h1>
+    <div class="tabs">
+        <div class="tab active" id="allTab">Todas las memorias</div>
+    </div>
+    <input type="text" id="search" placeholder="Buscar por título de memoria">
+    <div id="memoria-list"></div>
+
+    <script>
+    function loadMemorias(query) {
+        let url = 'http://localhost:5001/memorias';
+        if (query) {
+            url = 'http://localhost:5001/memorias/search/' + query;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: (data) => {
+                let html = '';
+                if (Array.isArray(data) && data.length > 0) {
+                    html = '<ul>';
+                    data.forEach(memoria => {
+                        html += `<li>Usuario: ${memoria.user} - Título: ${memoria.title} - Cuerpo: ${memoria.body} - Hashtags: ${memoria.hashtag.join(', ')}<br>`;
+                        memoria.media.forEach(media => {
+                            html += `<img class="memoria-img" src="${media}" alt="${memoria.title}"><br>`;
+                        });
+                        html += '</li>';
+                    });
+                    html += '</ul>';
+                } else {
+                    html = '<p>No se encontraron memorias</p>';
+                }
+                $('#memoria-list').html(html);
+            },
+            error: (xhr, status, error) => {
+                console.error('Error al obtener la lista de memorias:', error);
+            }
+        });
+    }
+
+        $(function(){
+            $('.tab').on('click', function() {
+                $('.tab').removeClass('active');
+                $(this).addClass('active');
+                loadMemorias($('#search').val());
+            });
+
+            $('#search').on('keyup', function(e) {
+                loadMemorias(this.value);
+            });
+        });
+    </script>
+</body>
+</html>

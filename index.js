@@ -14,7 +14,7 @@ const $ = require('jquery');
 
 require('dotenv').config();
 
-const userRoutes = require('./routes/index'); // Asegúrate de ajustar la ruta correcta
+const userRoutes = require('./routes/index');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -68,7 +68,7 @@ const fileFilter = (req, file, cb) => {
 
 const uploadMiddleware = multer({storage, fileFilter});
 
-app.post('/upload', uploadMiddleware.single('archivo'), (req, res) => {
+app.post('/upload', uploadMiddleware.single('foto'), (req, res) => {
     console.log('File:', req.file);
     if(req.file){
         //console.log('body: ', req.body);
