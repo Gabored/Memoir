@@ -39,7 +39,7 @@ router.post('/memorias', memoriasController.crear);
 router.put('/memorias/:id', memoriasController.editar);
 router.delete('/memorias/:id', memoriasController.eliminar);
 
-router.get('/comments', authMiddleware);
+//router.get('/comments', authMiddleware);
 // CRUD COMMENTS
 router.get('/comments', commentsController.listar);
 router.get('/comments/:id', commentsController.ver);

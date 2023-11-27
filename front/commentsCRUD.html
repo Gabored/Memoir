@@ -1,36 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Comments CRUD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Comentarios</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>Comments CRUD Operations</h1>
-
-    <!-- Form for creating a new comment -->
-    <h2>Create Comment</h2>
+    <h1>Lista de Comentarios</h1>
+    <div id="comments-list"></div>
+    
     <form id="create-comment-form">
-        <label for="writer_user">Writer User:</label>
-        <input type="text" id="writer_user" name="writer_user" required><br><br>
-
-        <label for="post_id">Post ID:</label>
-        <input type="text" id="post_id" name="post_id" required><br><br>
-
-        <label for="body">Comment Body:</label><br>
-        <textarea id="body" name="body" rows="4" cols="50" required></textarea><br><br>
-
-        <label for="reply">Is a Reply:</label>
-        <input type="checkbox" id="reply" name="reply"><br><br>
-
-        <button type="submit">Create Comment</button>
+        <!-- Aquí irían los campos del formulario para crear un nuevo comentario -->
+        <input type="text" name="writer_user" placeholder="Nombre de usuario"><br>
+        <input type="text" name="post_id" placeholder="ID de publicación"><br>
+        <textarea name="body" placeholder="Cuerpo del comentario"></textarea><br>
+        <input type="checkbox" name="reply" id="reply">
+        <label for="reply">Es una respuesta</label><br>
+        <button type="submit">Crear Comentario</button>
     </form>
 
-    <hr>
+    <script>
+        $(function(){
+            const commentsListDiv = $('#comments-list');
+            const createCommentForm = $('#create-comment-form');
 
-    <!-- Display all comments -->
-    <h2>All Comments</h2>
-    <div id="comments-list"></div>
+            // Función para cargar todos los comentarios
+            const loadComments = () => {
+                $.ajax({
+                    url: 'http://localhost:5001/comments', // Reemplaza esta URL por la correcta
+                    type: 'GET',
+                    success: (comments) => {
+                        commentsListDiv.empty(); // Limpia el div antes de cargar los comentarios
 
-    <script src="commentsCRUD.js"></script>
+                        comments.forEach(comment => {
+                            const commentDiv = $(`
+                                <div>
+                                    <p><strong>${comment.writer_user}</strong></p>
+                                    <p>${comment.body}</p>
+                                    <hr>
+                                </div>
+                            `);
+                            commentsListDiv.append(commentDiv);
+                        });
+                    },
+                    error: () => {
+                        console.error('Error al obtener la lista de comentarios');
+                    }
+                });
+            };
+
+            // Cargar los comentarios al cargar la página
+            loadComments();
+
+            // Evento de envío del formulario para crear un comentario
+            createCommentForm.on('submit', function(event) {
+                event.preventDefault();
+
+                const formData = createCommentForm.serialize();
+
+                $.ajax({
+                    url: 'http://localhost:5001/comments', // Reemplaza esta URL por la correcta
+                    type: 'POST',
+                    data: formData,
+                    success: function() {
+                        loadComments(); // Después de crear el comentario, cargar la lista actualizada
+                        createCommentForm[0].reset();
+                    },
+                    error: function(error) {
+                        console.error('Error creando comentario:', error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
