@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comments CRUD</title>
+</head>
+<body>
+    <h1>Comments CRUD Operations</h1>
+
+    <!-- Form for creating a new comment -->
+    <h2>Create Comment</h2>
+    <form id="create-comment-form">
+        <label for="writer_user">Writer User:</label>
+        <input type="text" id="writer_user" name="writer_user" required><br><br>
+
+        <label for="post_id">Post ID:</label>
+        <input type="text" id="post_id" name="post_id" required><br><br>
+
+        <label for="body">Comment Body:</label><br>
+        <textarea id="body" name="body" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="reply">Is a Reply:</label>
+        <input type="checkbox" id="reply" name="reply"><br><br>
+
+        <button type="submit">Create Comment</button>
+    </form>
+
+    <hr>
+
+    <!-- Display all comments -->
+    <h2>All Comments</h2>
+    <div id="comments-list"></div>
+
+    <script src="commentsCRUD.js"></script>
+</body>
+</html>
