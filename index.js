@@ -25,13 +25,18 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Rutas de usuario
-app.use(userRoutes);
+app.use('/api', userRoutes);
 
 app.use('/assets', express.static(path.join(__dirname, 'media')));
 
 // PRUEBA
 app.get('', (req, res) => {
     const uri = path.join(__dirname, 'front', 'index.html');
+    res.sendFile(uri);
+})
+
+app.get('/crear-memoria', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'crear-memoria.html');
     res.sendFile(uri);
 })
 
