@@ -47,7 +47,7 @@ router.post('/comments', commentsController.crear);
 router.put('/comments/:id', commentsController.editar);
 router.delete('/comments/:id', commentsController.eliminar);
 
-router.get('/medias', authMiddleware);
+//router.get('/medias', authMiddleware);
 // CRUD MEDIAS
 router.get('/medias', mediasController.listar);
 router.get('/medias/:id', mediasController.ver);
