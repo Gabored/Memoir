@@ -53,25 +53,42 @@
             // Cargar los comentarios al cargar la página
             loadComments();
 
-            // Evento de envío del formulario para crear un comentario
+           // Evento de envío del formulario para crear un comentario
             createCommentForm.on('submit', function(event) {
                 event.preventDefault();
 
-                const formData = createCommentForm.serialize();
+                // Obtener datos del formulario
+                const writer_user = $('input[name="writer_user"]').val();
+                const post_id = $('input[name="post_id"]').val();
+                const body = $('textarea[name="body"]').val();
+                const reply = $('input[name="reply"]').is(':checked');
 
+                const commentData = {
+                    writer_user,
+                    post_id,
+                    body,
+                    reply
+                };
+
+                // Realizar la solicitud AJAX para crear el comentario
                 $.ajax({
-                    url: 'http://localhost:5001/comments', // Reemplaza esta URL por la correcta
+                    url: 'http://localhost:5001/comments',
                     type: 'POST',
-                    data: formData,
-                    success: function() {
-                        loadComments(); // Después de crear el comentario, cargar la lista actualizada
+                    data: JSON.stringify(commentData),
+                    contentType: 'application/json',
+                    success: () => {
+                        alert('Comentario creado exitosamente');
+                        loadComments(); // Cargar la lista actualizada de comentarios
                         createCommentForm[0].reset();
                     },
-                    error: function(error) {
-                        console.error('Error creando comentario:', error);
+                    error: () => {
+                        alert('Error al crear el comentario');
                     }
                 });
+
+                return false;
             });
+
         });
     </script>
 </body>

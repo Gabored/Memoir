@@ -30,20 +30,20 @@ class CommentsController {
 
     crear(req, res) {
         const { writer_user, post_id, body, reply } = req.body;
-
-        const newComment = new Comment({
+        
+        const nuevoComentario = new Comment({
             writer_user,
             post_id,
             body,
             reply
         });
-
-        newComment.save()
-            .then(savedComment => {
-                res.send(savedComment);
+    
+        nuevoComentario.save()
+            .then(comentarioGuardado => {
+                res.send(comentarioGuardado);
             })
             .catch(error => {
-                console.error('Error al crear un nuevo comentario', error);
+                console.error('Error al guardar el comentario:', error);
                 res.sendStatus(500);
             });
     }
