@@ -55,10 +55,10 @@ router.post('/medias', mediasController.crear);
 router.put('/medias/:id', mediasController.editar);
 router.delete('/medias/:id', mediasController.eliminar);
 
-router.get('/hashtags', authMiddleware);
+//router.get('/hashtags', authMiddleware);
 // CRUD HASHTAGS
 router.get('/hashtags', hashtagsController.listar);
-router.get('/hashtags/:id', hashtagsController.ver);
+router.get('/hashtags/search/:name', hashtagsController.search);
 router.post('/hashtags', hashtagsController.crear);
 router.put('/hashtags/:id', hashtagsController.editar);
 router.delete('/hashtags/:id', hashtagsController.eliminar);

@@ -3,29 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuarios</title>
+    <title>Lista de Hashtags</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        .hashtag-img {
+            width: 50px; /* Ajusta este valor al tamaño que desees */
+            height: auto;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lista de Usuarios</h1>
-    <div id="user-list"></div>
+    <h1>Lista de Hashtags</h1>
+    <div class="tabs">
+        <div class="tab active" id="allTab">All hashtags</div>
+    </div>
+    <input type="text" id="search" placeholder="Buscar por nombre de hashtag">
+    <div id="hashtag-list"></div>
 
     <script>
-        $(function(){
-            $.ajax({
-                url: 'http://localhost:5001/hashtags',
-                type: 'GET',
-                success: (data) => {
-                    let html = '<ul>';
-                    data.forEach(user => {
-                        html += `<li>${user.name} - ${user.email}</li>`;
+    function loadHashtags(query) {
+        let url = 'http://localhost:5001/hashtags';
+        if (query) {
+            url = 'http://localhost:5001/hashtags/search/' + query;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: (data) => {
+                let html = '';
+                if (Array.isArray(data) && data.length > 0) {
+                    html = '<ul>';
+                    data.forEach(hashtag => {
+                        html += `<li>${hashtag.name} - <img class="hashtag-img" src="${hashtag.img}" alt="${hashtag.name}"></li>`;
                     });
                     html += '</ul>';
-                    $('#user-list').html(html);
-                },
-                error: () => {
-                    console.error('Error al obtener la lista de usuarios');
+                } else {
+                    html = '<p>No se encontraron hashtags</p>';
                 }
+                $('#hashtag-list').html(html);
+            },
+            error: (xhr, status, error) => {
+                console.error('Error al obtener la lista de hashtags:', error);
+            }
+        });
+    }
+
+        $(function(){
+            $('.tab').on('click', function() {
+                $('.tab').removeClass('active');
+                $(this).addClass('active');
+                loadHashtags($('#search').val());
+            });
+
+            $('#search').on('keyup', function(e) {
+                loadHashtags(this.value);
             });
         });
     </script>

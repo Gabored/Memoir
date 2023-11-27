@@ -1,4 +1,4 @@
-$.ajax({
+/* $.ajax({
     url: 'http://localhost:5001/users',
     type: 'GET',
     success: (data) => {
@@ -8,4 +8,4 @@ $.ajax({
     error: () => {
         console.error('Error al obtener la lista de usuarios');
     }
-});
+}); */
