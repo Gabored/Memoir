@@ -27,15 +27,28 @@ app.use(cors());
 // Rutas de usuario
 app.use(userRoutes);
 
-// Ruta de prueba
+app.use('/assets', express.static(path.join(__dirname, 'media')));
+
+// PRUEBA
 app.get('', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'index.html');
+    res.sendFile(uri);
+})
+
+app.get('*', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'error.html');
+    res.sendFile(uri)
+})
+
+// Ruta de prueba
+/* app.get('', (req, res) => {
     res.send('API works!');
 
     const token = jwt.sign({ id: 1, email: 'ejemplo@email.com' }, secretKey);
     console.log('Token:', token);
-});
+}); */
 
-app.use('/assets', express.static(path.join(__dirname, 'uploads')));
+// app.use('/assets', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/validate', (req, res) => {
     const token = req.query.token;
