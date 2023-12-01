@@ -7,15 +7,15 @@ const file = require('./../models/file');
 
 class MemoriasController { // estructura para que puedas hacer varios metodos 
 
-    // Filter memorias by name
+    // Filter memorias by title
     search(req, res) {
-        const name = req.params.name;
-        Hashtag.find({ name: new RegExp(name, 'i') })
-            .then(hashtags => {
-                res.send(hashtags);
+        const title = req.params.query;
+        Memoria.find({ title: new RegExp(title, 'i') })
+            .then(memorias => {
+                res.send(memorias);
             })
             .catch(error => {
-                console.error('Error al buscar los hashtags', error);
+                console.error('Error al buscar las memorias', error);
                 res.sendStatus(500);
             });
     }

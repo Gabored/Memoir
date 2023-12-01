@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Rutas de usuario
-app.use('/api', userRoutes);
+app.use('', userRoutes);
 
 app.use('/assets', express.static(path.join(__dirname, 'media')));
 
@@ -40,10 +40,10 @@ app.get('/crear-memoria', (req, res) => {
     res.sendFile(uri);
 })
 
-app.get('*', (req, res) => {
+/* app.get('*', (req, res) => {
     const uri = path.join(__dirname, 'front', 'error.html');
     res.sendFile(uri)
-})
+}) */
 
 // Ruta de prueba
 /* app.get('', (req, res) => {
