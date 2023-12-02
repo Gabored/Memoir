@@ -62,7 +62,7 @@ app.get('/validate', (req, res) => {
 });
 
 // Subir memoria
-const Attachment = require('./src/models/file');
+const Attachment = require('./src/models/media');
 
 let uploadCount = 0;
 
@@ -122,4 +122,4 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get('*', (req, res) => {
     const uri = path.join(__dirname, 'front', 'error.html');
     res.sendFile(uri)
-})
+}) 

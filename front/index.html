@@ -6,51 +6,6 @@
     <link rel="stylesheet" href="style-index.css">
     <title>Memoir - Inicio</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <style>
-        /* Estilos para la barra de búsqueda en la sidebar-right-menu */
-        .sidebar-right-menu li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .sidebar-right-menu input[type="text"] {
-            margin-left: 10px;
-        }
-
-        /* Estilos para la lista de hashtags filtrados */
-        #filteredHashtags ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        #filteredHashtags li {
-            margin-bottom: 5px;
-        }
-
-        .hashtag-img {
-            width: 50px;
-            height: auto;
-        }
-
-        .tabs {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .tab {
-            cursor: pointer;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .tab.active {
-            background-color: #007BFF;
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -104,7 +59,9 @@
             <li>
                 <img src="..\media\lupa-icon.png" alt="Buscar">
                 <span>Buscar</span>
-                <input type="text" id="searchHashtag" placeholder="Buscar por nombre de hashtag">
+                <input type="text" id="searchHashtag" placeholder="Buscar hashtag">
+            </li>
+            <li>
                 <div id="filteredHashtags"></div>
             </li>
             <li>
@@ -155,9 +112,6 @@
             $('#searchHashtag').on('keyup', function() {
                 loadHashtags(this.value);
             });
-
-            // Puedes agregar aquí más código JavaScript si es necesario
-
         });
     </script>
 </body>

@@ -13,7 +13,11 @@ const authMiddleware = require('./../src/middlewares/auth');
 router.use(express.json());
 
 // Auth
-router.get('/login', loginController.login);
+router.post('/login', loginController.login);
+router.get('/secure-route', authMiddleware, (req, res) => {
+    // Acciones seguras que requieren autenticación
+    res.json({ msg: 'Ruta segura' });
+});
 
 // Signup
 router.post('/users', usersController.crear);
@@ -33,7 +37,8 @@ router.delete('/users/:id', usersController.eliminar);
 
 //router.get('/memorias', authMiddleware);
 // CRUD MEMORIAS
-router.get('/memorias', memoriasController.listar);
+//router.get('/memorias', authMiddleware, memoriasController.listar);
+//router.get('/memorias', memoriasController.listar);
 router.get('/memorias/search/:query', memoriasController.search);
 router.post('/memorias', memoriasController.crear);
 router.put('/memorias/:id', memoriasController.editar);
