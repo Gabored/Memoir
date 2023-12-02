@@ -1,23 +1,35 @@
 $(function(){
     const $form = $('form').eq(0);
     const $button = $('#submit1').first();
-    const fileInput = $('input[name="foto"]')[0];
 
-    let archivoSeleccionado = null;
-    
-    // Función para verificar si ya seleccione un archivo
-    fileInput.addEventListener('change', (e) => {
-        console.log('Archivo seleccionado', fileInput.files[0]);
-        archivoSeleccionado = fileInput.files[0];
-        $button.prop('disabled', false);
+    let archivosSeleccionados = [];
+
+    function handleFileChange(e) {
+        console.log('Archivo seleccionado', this.files[0]);
+        const file = this.files[0];
+        const exists = archivosSeleccionados.some(archivo => archivo.name === file.name && archivo.size === file.size && archivo.lastModified === file.lastModified);
+        if (!exists) {
+            archivosSeleccionados.push(file);
+            $button.prop('disabled', false);
+        }
+    }    
+
+    $form.on('change', 'input[name="foto"]', handleFileChange);
+
+    $('#addMore').click(function() {
+        const $newInput = $('<input type="file" name="foto">');
+        $newInput.change(handleFileChange);
+        $('#fileInputsContainer').append($newInput);
     });
 
     $form.on('submit', (e) => {
         e.preventDefault();
 
-        if(archivoSeleccionado){
+        if(archivosSeleccionados.length > 0){
             const form = new FormData();
-            form.append('foto', archivoSeleccionado);
+            archivosSeleccionados.forEach((archivo) => {
+                form.append('foto', archivo);
+            });
 
             $.ajax({
                 url: 'http://localhost:5001/upload',
@@ -27,7 +39,8 @@ $(function(){
                 contentType: false,
                 data: form,
                 success: () => {
-                    alert('Se subió el archivo correctamente');
+                    alert('Se subieron los archivos correctamente');
+                    archivosSeleccionados = [];
                 },
                 error: () => {
                     alert('Algo salió mal');

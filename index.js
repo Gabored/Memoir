@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 
-const $ = require('jquery');
+//const $ = require('jquery');
 
 require('dotenv').config();
 
@@ -40,11 +40,6 @@ app.get('/crear-memoria', (req, res) => {
     res.sendFile(uri);
 })
 
-/* app.get('*', (req, res) => {
-    const uri = path.join(__dirname, 'front', 'error.html');
-    res.sendFile(uri)
-}) */
-
 // Ruta de prueba
 /* app.get('', (req, res) => {
     res.send('API works!');
@@ -67,6 +62,10 @@ app.get('/validate', (req, res) => {
 });
 
 // Subir memoria
+const Attachment = require('./src/models/file');
+
+let uploadCount = 0;
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads');
@@ -74,7 +73,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const ts = new Date().getTime();
         const ext = file.originalname.split('.').pop();
-        const name = `${ts}.${ext}`;
+        const name = `${ts}-${uploadCount++}.${ext}`;
         cb(null, name);
     }
 });
@@ -86,14 +85,26 @@ const fileFilter = (req, file, cb) => {
 
 const uploadMiddleware = multer({storage, fileFilter});
 
-app.post('/upload', uploadMiddleware.single('foto'), (req, res) => {
-    console.log('File:', req.file);
-    if(req.file){
-        //console.log('body: ', req.body);
+app.post('/upload', uploadMiddleware.array('foto'), async (req, res) => {
+    console.log('Files:', req.files);
+    if(req.files && req.files.length > 0){
+        const attachment = new Attachment({
+            title: req.files.map(file => file.filename),
+        });
+
+        try {
+            await attachment.save();
+            console.log('Archivos guardados en la base de datos');
+        } catch (error) {
+            console.error('Error al guardar los archivos en la base de datos:', error);
+        }
+
         res.send('OK!');
     } else{
         res.status(400).send('invalid format');
     }
+
+    uploadCount = 0;
 });
 
 const mongoUrl = process.env.MONGO_URL;
@@ -108,33 +119,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log('Unable to connect to the database', err);
     });
 
-// Crear usuario
-/* function fetchUsers() {
-    $.ajax({
-        url: 'http://localhost:5001/users',
-        method: 'POST',
-        dataType: 'json',
-        success: function (users) {
-            const userListDiv = $('#userList');
-            userListDiv.empty();
-
-            $.each(users, function (index, user) {
-                const userDiv = $('<div>');                 
-                userDiv.html(`                     
-                    <p>Name: ${user.name}</p>                     
-                    <p>Email: ${user.email}</p> 
-                    <hr> 
-                    `);                 
-                    userListDiv.append(userDiv);             
-                });         
-            },         
-            error: function (error) {             
-                console.error('Error fetching users:', error);         
-            }     
-        }); 
-    } 
-    
-    // Call the fetchUsers function when the document is ready or as needed
-    //$(document).ready(function () {     
-    //    fetchUsers(); 
-    //}); */
+app.get('*', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'error.html');
+    res.sendFile(uri)
+})

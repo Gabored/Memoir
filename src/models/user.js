@@ -7,9 +7,9 @@ const userSchema = new Schema({
     surname: {type: String, require: true},
     username: {type: String, require: true},
     password: {type: String, require: true},
-    email: {type: String, require: true},
+    email: {type: String},
     location: {type: String},
-    interests: {type: String, require: true},
+    interests: {type: String},
 })
 
 module.exports = model('users', userSchema);

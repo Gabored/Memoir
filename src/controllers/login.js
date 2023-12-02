@@ -4,13 +4,13 @@ const User = require('./../models/user');
 class LoginController {
 
     login(req, res){
-        const { email, password } = req.body;
+        const { username, password } = req.body;
         console.log('Body ', req.body);
-        User.findOne( { email, password })
+        User.findOne( { username, password })
             .then(response => {
                 if(response){
-                    const {_id, email } = response;
-                    const token = jwt.sign({_id, email}, process.env.SECRET_KEY);
+                    const {_id, username } = response;
+                    const token = jwt.sign({_id, username}, process.env.SECRET_KEY);
                 } else {
                     res.sendStatus(400);
                 }
