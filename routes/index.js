@@ -40,7 +40,7 @@ router.delete('/users/:id', usersController.eliminar);
 //router.get('/memorias', authMiddleware);
 // CRUD MEMORIAS
 //router.get('/memorias', authMiddleware, memoriasController.listar);
-//router.get('/memorias', memoriasController.listar);
+router.get('/memorias', memoriasController.listar);
 router.get('/memorias/search/:query', memoriasController.search);
 router.post('/memorias', memoriasController.crear);
 router.put('/memorias/:id', memoriasController.editar);
