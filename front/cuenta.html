@@ -13,6 +13,10 @@
         <div id="user-info-container">
             <!-- Aquí se mostrará la información del usuario obtenida mediante AJAX -->
         </div>
+        <!-- Botones de acción -->
+        <button class="edit-button">Editar</button>
+        <button class="delete-button">Borrar cuenta</button>
+        <button class="logout-button">Cerrar sesión</button>
     </div>
 
     <!-- Footer -->
@@ -22,59 +26,72 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-        // Hacer una solicitud al endpoint para obtener información del usuario
-        $.ajax({
-            url: 'http://localhost:5001/user-info',
-            type: 'GET',
-            dataType: 'json',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token') // Adjunta el token en el encabezado
-            },
-            success: function(data) {
-                // Mostrar la información del usuario en el contenedor
-                fillUserData(data);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al obtener información del usuario:', error);
-                if (xhr.status === 401) {
-                    // Manejar el caso en que el token no es válido o está ausente
-                    alert('Token no válido. Debe iniciar sesión.');
-                    window.location.href = 'login.html'; // Redirige a la página de inicio de sesión
-                } else {
-                    alert('Error al obtener información del usuario.');
+        $(document).ready(function () {
+            // Hacer una solicitud al endpoint para obtener información del usuario
+            $.ajax({
+                url: 'http://localhost:5001/user-info',
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Adjunta el token en el encabezado
+                },
+                success: function(data) {
+                    // Mostrar la información del usuario en el contenedor
+                    var userInfoHtml = '<div><strong>Nombre:</strong> ' + data.name + '</div>';
+                    userInfoHtml += '<div><strong>Apellido:</strong> ' + data.surname + '</div>';
+                    userInfoHtml += '<div><strong>Nombre de usuario:</strong> ' + data.username + '</div>';
+                    userInfoHtml += '<div><strong>Email:</strong> ' + data.email + '</div>';
+                    userInfoHtml += '<div><strong>Ubicación:</strong> ' + data.location + '</div>';
+                    userInfoHtml += '<div><strong>Intereses:</strong> ' + data.interests + '</div>';
+
+                    // Mostrar la información del usuario en el contenedor
+                    $('#user-info-container').html(userInfoHtml);
+
+                    // Agregar eventos a los botones
+                    $('.edit-button').on('click', function () {
+                        // Lógica para la acción de editar
+                        console.log('Implementa la lógica para editar aquí');
+                    });
+
+                    $('.delete-button').on('click', function () {
+                        // Lógica para la acción de borrar cuenta
+                        if (confirm('¿Estás seguro de que quieres borrar tu cuenta?')) {
+                            // Realizar la solicitud para eliminar la cuenta
+                            $.ajax({
+                                url: 'http://localhost:5001/delete-account',
+                                type: 'DELETE',
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                                },
+                                success: function (response) {
+                                    alert('Cuenta eliminada correctamente');
+                                    window.location.href = 'login.html';
+                                },
+                                error: function (xhr, status, error) {
+                                    alert('Error al borrar la cuenta');
+                                }
+                            });
+                        }
+                    });
+
+                    $('.logout-button').on('click', function () {
+                        // Lógica para la acción de cerrar sesión
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al obtener información del usuario:', error);
+                    if (xhr.status === 401) {
+                        // Manejar el caso en que el token no es válido o está ausente
+                        alert('Token no válido. Debe iniciar sesión.');
+                        window.location.href = 'login.html'; // Redirige a la página de inicio de sesión
+                    } else {
+                        alert('Error al obtener información del usuario.');
+                    }
                 }
-            }
+            });
         });
-
-        function fillUserData(userData) {
-            // Llena los campos con la información del usuario
-            // Asegúrate de tener campos correspondientes en tu objeto de datos (userData)
-            $('#user-info-container').html(`
-                <div class="user-info-field">
-                    <label for="name">Nombre:</label>
-                    <input type="text" id="name" value="${userData.name}" readonly>
-                    <button class="edit" onclick="editField('name')">Editar</button>
-                    <button class="delete" onclick="deleteField('name')">Eliminar</button>
-                </div>
-                <!-- Repite lo anterior para otros campos -->
-            `);
-        }
-
-        function editField(fieldName) {
-            // Habilita la edición del campo
-            $('#' + fieldName).prop('readonly', false);
-        }
-
-        function deleteField(fieldName) {
-            // Implementa la lógica para eliminar el campo (puedes ocultarlo o mostrar un mensaje de confirmación)
-            alert('Campo eliminado: ' + fieldName);
-        }
-
-        function logout() {
-            // Implementa la lógica para cerrar sesión (puedes redirigir al usuario a la página de inicio de sesión)
-            alert('Sesión cerrada');
-            window.location.href = 'login.html';
-        }
     </script>
 </body>
 </html>
