@@ -116,6 +116,25 @@ class UsersController {
                 res.sendStatus(500);
             });
     }
+
+
+    getUserInfo(req, res) {
+        const userId = req.user._id; // Puedes obtener el ID del usuario desde el token
+        
+        // Buscar la información del usuario en la base de datos
+        User.findById(userId)
+            .then(user => {
+                if (user) {
+                    res.status(200).json(user);
+                } else {
+                    res.status(404).json({ message: 'Usuario no encontrado' });
+                }
+            })
+            .catch(err => {
+                console.error('Error al obtener la información del usuario:', err);
+                res.status(500).json({ message: 'Error del servidor' });
+            });
+        }
 }
 
 module.exports = new UsersController();

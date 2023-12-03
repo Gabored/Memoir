@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style-cuenta.css"> <!-- Añade tu hoja de estilos específica para "cuenta.html" -->
+    <title>Memoir - Cuenta</title>
+</head>
+<body>
+    <div class="container-cuenta">
+        <!-- Contenido de la página "cuenta.html" -->
+        <h1>Información del Usuario</h1>
+        <div id="user-info-container">
+            <!-- Aquí se mostrará la información del usuario obtenida mediante AJAX -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Memoir, Inc</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        // Hacer una solicitud al endpoint para obtener información del usuario
+        $.ajax({
+            url: 'http://localhost:5001/user-info',
+            type: 'GET',
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') // Adjunta el token en el encabezado
+            },
+            success: function(data) {
+                // Mostrar la información del usuario en el contenedor
+                $('#user-info-container').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al obtener información del usuario:', error);
+                if (xhr.status === 401) {
+                    // Manejar el caso en que el token no es válido o está ausente
+                    alert('Token no válido. Debe iniciar sesión.');
+                    window.location.href = 'login.html'; // Redirige a la página de inicio de sesión
+                } else {
+                    alert('Error al obtener información del usuario.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

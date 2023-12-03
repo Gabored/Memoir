@@ -122,4 +122,4 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get('*', (req, res) => {
     const uri = path.join(__dirname, 'front', 'error.html');
     res.sendFile(uri)
-})
+}) 
