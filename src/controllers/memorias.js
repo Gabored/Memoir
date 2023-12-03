@@ -69,6 +69,8 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
             res.status(400).send();
         })
     }
+
+    
 }
 
 module.exports = new MemoriasController();

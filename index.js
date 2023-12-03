@@ -48,7 +48,6 @@ app.get('/crear-memoria', (req, res) => {
     console.log('Token:', token);
 }); */
 
-app.use('/assets', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/validate', (req, res) => {
     const token = req.query.token;
