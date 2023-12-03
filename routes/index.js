@@ -35,7 +35,7 @@ router.delete('/delete-account', authMiddleware, usersController.eliminar);
 router.get('/users', usersController.listar);
 router.get('/users/:id', usersController.ver);
 router.post('/users', usersController.crear);
-router.put('/users/:id', usersController.editar);
+router.put('/edit-account', authMiddleware, usersController.editar);
 
 //router.get('/memorias', authMiddleware);
 // CRUD MEMORIAS

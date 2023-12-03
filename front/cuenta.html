@@ -15,6 +15,7 @@
         </div>
         <!-- Botones de acción -->
         <button class="edit-button">Editar</button>
+        <button class="save-button" style="display: none;">Guardar Cambios</button>
         <button class="delete-button">Borrar cuenta</button>
         <button class="logout-button">Cerrar sesión</button>
     </div>
@@ -27,6 +28,9 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
+
+            var isEditing = false;
+
             // Hacer una solicitud al endpoint para obtener información del usuario
             $.ajax({
                 url: 'http://localhost:5001/user-info',
@@ -37,59 +41,85 @@
                 },
                 success: function(data) {
                     // Mostrar la información del usuario en el contenedor
-                    var userInfoHtml = '<div><strong>Nombre:</strong> ' + data.name + '</div>';
-                    userInfoHtml += '<div><strong>Apellido:</strong> ' + data.surname + '</div>';
-                    userInfoHtml += '<div><strong>Nombre de usuario:</strong> ' + data.username + '</div>';
-                    userInfoHtml += '<div><strong>Email:</strong> ' + data.email + '</div>';
-                    userInfoHtml += '<div><strong>Ubicación:</strong> ' + data.location + '</div>';
-                    userInfoHtml += '<div><strong>Intereses:</strong> ' + data.interests + '</div>';
+                    var userInfoHtml = '<div><strong>Nombre:</strong> <span id="name">' + data.name + '</span></div>';
+                    userInfoHtml += '<div><strong>Apellido:</strong> <span id="surname">' + data.surname + '</span></div>';
+                    userInfoHtml += '<div><strong>Nombre de usuario:</strong> <span id="username">' + data.username + '</span></div>';
+                    userInfoHtml += '<div><strong>Email:</strong> <span id="email">' + data.email + '</span></div>';
+                    userInfoHtml += '<div><strong>Ubicación:</strong> <span id="location">' + data.location + '</span></div>';
+                    userInfoHtml += '<div><strong>Intereses:</strong> <span id="interests">' + data.interests + '</span></div>';
 
                     // Mostrar la información del usuario en el contenedor
                     $('#user-info-container').html(userInfoHtml);
 
-                    // Agregar eventos a los botones
+                    // Evento al hacer clic en "Editar"
                     $('.edit-button').on('click', function () {
-                        // Lógica para la acción de editar
-                        console.log('Implementa la lógica para editar aquí');
-                    });
-
-                    $('.delete-button').on('click', function () {
-                        // Lógica para la acción de borrar cuenta
-                        if (confirm('¿Estás seguro de que quieres borrar tu cuenta?')) {
-                            // Realizar la solicitud para eliminar la cuenta
-                            $.ajax({
-                                url: 'http://localhost:5001/delete-account',
-                                type: 'DELETE',
-                                headers: {
-                                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                                },
-                                success: function (response) {
-                                    alert('Cuenta eliminada correctamente');
-                                    window.location.href = 'login.html';
-                                },
-                                error: function (xhr, status, error) {
-                                    alert('Error al borrar la cuenta');
-                                }
-                            });
+                        if (!isEditing) {
+                            isEditing = true;
+                            // Habilitar la edición de campos
+                            $('#name, #surname, #username, #email, #location, #interests').attr('contenteditable', true).css('border', '1px solid green');
+                            // Mostrar el botón "Guardar Cambios"
+                            $('.save-button').show();
                         }
                     });
 
-                    $('.logout-button').on('click', function () {
-                        // Lógica para la acción de cerrar sesión
-                        localStorage.removeItem('token');
-                        window.location.href = 'login.html';
+                    // Evento al hacer clic en "Guardar Cambios"
+                    $('.save-button').on('click', function () {
+                        // Obtener los datos editados
+                        var editedData = {
+                            name: $('#name').text(),
+                            surname: $('#surname').text(),
+                            username: $('#username').text(),
+                            email: $('#email').text(),
+                            location: $('#location').text(),
+                            interests: $('#interests').text(),
+                        };
+
+                        // Lógica para enviar los datos editados al servidor mediante una solicitud AJAX
+                        $.ajax({
+                            url: 'http://localhost:5001/edit-account',
+                            type: 'PUT',
+                            data: editedData,
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            },
+                            success: function (response) {
+                                alert('Cambios guardados correctamente');
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Error al guardar los cambios');
+                            }
+                        });
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al obtener información del usuario:', error);
-                    if (xhr.status === 401) {
-                        // Manejar el caso en que el token no es válido o está ausente
-                        alert('Token no válido. Debe iniciar sesión.');
-                        window.location.href = 'login.html'; // Redirige a la página de inicio de sesión
-                    } else {
-                        alert('Error al obtener información del usuario.');
-                    }
                 }
+            });
+
+            // Evento al hacer clic en "Borrar cuenta"
+            $('.delete-button').on('click', function () {
+                // Lógica para la acción de borrar cuenta
+                if (confirm('¿Estás seguro de que quieres borrar tu cuenta?')) {
+                    // Realizar la solicitud para eliminar la cuenta
+                    $.ajax({
+                        url: 'http://localhost:5001/delete-account',
+                        type: 'DELETE',
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        },
+                        success: function (response) {
+                            alert('Cuenta eliminada correctamente');
+                            window.location.href = 'login.html';
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error al borrar la cuenta');
+                        }
+                    });
+                }
+            });
+
+            // Evento al hacer clic en "Cerrar sesión"
+            $('.logout-button').on('click', function () {
+                // Lógica para la acción de cerrar sesión
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
             });
         });
     </script>
