@@ -71,21 +71,19 @@ class UsersController {
 
     // Editar un usuario existente
     editar(req, res) {
-        const id = req.params.id;
+        const userId = req.params.id;
         // Obtiene los datos del usuario actualizados del cuerpo de la solicitud
-        const { name, surname, username, password, email, location, interests, role } = req.body;
-
+        const { name, surname, username, password, email, location, interests } = req.body;
         // Método findByIdAndUpdate de Mongoose para actualizar el usuario
-        User.findByIdAndUpdate(id, {
+        User.findByIdAndUpdate(userId, {
             name,
             surname,
             username,
             password,
             email,
             location,
-            interests,
-            role
-        }, { new: true }) // La opción { new: true } devuelve el documento actualizado
+            interests
+        }, { new: true })
             .then(updatedUser => {
                 if (updatedUser) {
                     res.send(updatedUser);
@@ -101,9 +99,9 @@ class UsersController {
 
     // Eliminar un usuario
     eliminar(req, res) {
-        const id = req.params.id;
+        const userId = req.params.id;
         // Utiliza el método findByIdAndRemove de Mongoose para eliminar el usuario
-        User.findByIdAndRemove(id)
+        User.findByIdAndRemove(userId)
             .then(deletedUser => {
                 if (deletedUser) {
                     res.send(deletedUser);
@@ -119,7 +117,7 @@ class UsersController {
 
 
     getUserInfo(req, res) {
-        const userId = req.user._id; // Puedes obtener el ID del usuario desde el token
+        const userId = req.user._id;
         
         // Buscar la información del usuario en la base de datos
         User.findById(userId)

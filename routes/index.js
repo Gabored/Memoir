@@ -31,11 +31,11 @@ router.post('/users', usersController.crear);
 // CRUD USERS
 // Ruta para obtener información del usuario actual
 router.get('/user-info', authMiddleware, usersController.getUserInfo);
-router.delete('/delete-account', authMiddleware, usersController.eliminar);
+router.delete('/delete-account/:id', authMiddleware, usersController.eliminar);
 router.get('/users', usersController.listar);
 router.get('/users/:id', usersController.ver);
 router.post('/users', usersController.crear);
-router.put('/edit-account', authMiddleware, usersController.editar);
+router.put('/edit-account/:id', authMiddleware, usersController.editar);
 
 //router.get('/memorias', authMiddleware);
 // CRUD MEMORIAS

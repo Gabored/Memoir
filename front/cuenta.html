@@ -3,125 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style-cuenta.css"> <!-- Añade tu hoja de estilos específica para "cuenta.html" -->
+    <link rel="stylesheet" href="style-cuenta.css">
     <title>Memoir - Cuenta</title>
 </head>
 <body>
     <div class="container-cuenta">
-        <!-- Contenido de la página "cuenta.html" -->
         <h1>Información del Usuario</h1>
-        <div id="user-info-container">
-            <!-- Aquí se mostrará la información del usuario obtenida mediante AJAX -->
-        </div>
-        <!-- Botones de acción -->
+        <div id="user-info-container"></div>
         <button class="edit-button">Editar</button>
         <button class="save-button" style="display: none;">Guardar Cambios</button>
         <button class="delete-button">Borrar cuenta</button>
         <button class="logout-button">Cerrar sesión</button>
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2023 Memoir, Inc</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function () {
-
-            var isEditing = false;
-
-            // Hacer una solicitud al endpoint para obtener información del usuario
-            $.ajax({
-                url: 'http://localhost:5001/user-info',
-                type: 'GET',
-                dataType: 'json',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Adjunta el token en el encabezado
-                },
-                success: function(data) {
-                    // Mostrar la información del usuario en el contenedor
-                    var userInfoHtml = '<div><strong>Nombre:</strong> <span id="name">' + data.name + '</span></div>';
-                    userInfoHtml += '<div><strong>Apellido:</strong> <span id="surname">' + data.surname + '</span></div>';
-                    userInfoHtml += '<div><strong>Nombre de usuario:</strong> <span id="username">' + data.username + '</span></div>';
-                    userInfoHtml += '<div><strong>Email:</strong> <span id="email">' + data.email + '</span></div>';
-                    userInfoHtml += '<div><strong>Ubicación:</strong> <span id="location">' + data.location + '</span></div>';
-                    userInfoHtml += '<div><strong>Intereses:</strong> <span id="interests">' + data.interests + '</span></div>';
-
-                    // Mostrar la información del usuario en el contenedor
-                    $('#user-info-container').html(userInfoHtml);
-
-                    // Evento al hacer clic en "Editar"
-                    $('.edit-button').on('click', function () {
-                        if (!isEditing) {
-                            isEditing = true;
-                            // Habilitar la edición de campos
-                            $('#name, #surname, #username, #email, #location, #interests').attr('contenteditable', true).css('border', '1px solid green');
-                            // Mostrar el botón "Guardar Cambios"
-                            $('.save-button').show();
-                        }
-                    });
-
-                    // Evento al hacer clic en "Guardar Cambios"
-                    $('.save-button').on('click', function () {
-                        // Obtener los datos editados
-                        var editedData = {
-                            name: $('#name').text(),
-                            surname: $('#surname').text(),
-                            username: $('#username').text(),
-                            email: $('#email').text(),
-                            location: $('#location').text(),
-                            interests: $('#interests').text(),
-                        };
-
-                        // Lógica para enviar los datos editados al servidor mediante una solicitud AJAX
-                        $.ajax({
-                            url: 'http://localhost:5001/edit-account',
-                            type: 'PUT',
-                            data: editedData,
-                            headers: {
-                                'Authorization': 'Bearer ' + localStorage.getItem('token')
-                            },
-                            success: function (response) {
-                                alert('Cambios guardados correctamente');
-                            },
-                            error: function (xhr, status, error) {
-                                alert('Error al guardar los cambios');
-                            }
-                        });
-                    });
-                }
-            });
-
-            // Evento al hacer clic en "Borrar cuenta"
-            $('.delete-button').on('click', function () {
-                // Lógica para la acción de borrar cuenta
-                if (confirm('¿Estás seguro de que quieres borrar tu cuenta?')) {
-                    // Realizar la solicitud para eliminar la cuenta
-                    $.ajax({
-                        url: 'http://localhost:5001/delete-account',
-                        type: 'DELETE',
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token')
-                        },
-                        success: function (response) {
-                            alert('Cuenta eliminada correctamente');
-                            window.location.href = 'login.html';
-                        },
-                        error: function (xhr, status, error) {
-                            alert('Error al borrar la cuenta');
-                        }
-                    });
-                }
-            });
-
-            // Evento al hacer clic en "Cerrar sesión"
-            $('.logout-button').on('click', function () {
-                // Lógica para la acción de cerrar sesión
-                localStorage.removeItem('token');
-                window.location.href = 'login.html';
-            });
-        });
-    </script>
+    <script src="./../src\scripts\cuentaScript.js"></script>
 </body>
 </html>

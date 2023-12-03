@@ -13,6 +13,7 @@ const authMiddleware = (req, res, next) => {
 
     jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
+            console.error('Error al verificar el token:', err);
             return res.status(401).send({ msg: 'Token de autenticación inválido' });
         } else {
             req.user = decoded;

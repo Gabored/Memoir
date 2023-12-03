@@ -9,7 +9,7 @@ class LoginController {
                 if (response) {
                     const { _id, username } = response;
                     const token = jwt.sign({ _id, username }, process.env.SECRET_KEY);
-                    res.status(200).json({ token });
+                    res.status(200).json({ token, userId: _id });
                 } else {
                     res.sendStatus(400);
                 }
