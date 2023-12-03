@@ -17,7 +17,7 @@
                 <li><img src="/assets/casa-icon.png" alt="Inicio"><span>Inicio</span></li>
                 <li><img src="..\media\corazon-icon.png" alt="Me gustan"><span>Me gustan</span></li>
                 <li><img src="..\media\campana-icon.png" alt="Notificaciones"><span>Notificaciones</span></li>
-                <li><img src="..\media\user-icon.png" alt="Cuenta"><span>Cuenta</span></li>
+                <li id="cuenta"><img src="..\media\user-icon.png" alt="Cuenta"><span>Cuenta</span></li>
                 <li><img src="..\media\config-icon.png" alt="Configuración"><span>Configuración</span></li>
             </ul>
         </div>
@@ -79,6 +79,16 @@
     </footer>
 
     <script>
+        // Cuenta de usuario
+        $(document).ready(function() {
+            // Manejar clic en "Cuenta"
+            $('#cuenta').on('click', function() {
+                // Redirigir a la página "cuenta.html"
+                window.location.href = 'cuenta.html';
+            });
+        });
+
+        // Buscar hashtags
         function loadHashtags(query) {
             let url = 'http://localhost:5001/hashtags';
             if (query) {

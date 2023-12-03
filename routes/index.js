@@ -29,6 +29,8 @@ router.post('/users', usersController.crear);
 // User
 //router.get('/users', authMiddleware);
 // CRUD USERS
+// Ruta para obtener información del usuario actual
+router.get('/user-info', authMiddleware, usersController.getUserInfo);
 router.get('/users', usersController.listar);
 router.get('/users/:id', usersController.ver);
 //router.post('/users', usersController.crear);
