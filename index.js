@@ -27,7 +27,7 @@ app.use(cors());
 // Rutas de usuario
 app.use('', userRoutes);
 
-app.use('/assets', express.static(path.join(__dirname, 'media')));
+app.use('/assets', express.static(path.join(__dirname, 'uploads')));
 
 // PRUEBA
 app.get('', (req, res) => {
@@ -48,7 +48,7 @@ app.get('/crear-memoria', (req, res) => {
     console.log('Token:', token);
 }); */
 
-// app.use('/assets', express.static(path.join(__dirname, 'uploads')));
+app.use('/assets', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/validate', (req, res) => {
     const token = req.query.token;
@@ -62,7 +62,7 @@ app.get('/validate', (req, res) => {
 });
 
 // Subir memoria
-const Attachment = require('./src/models/file');
+const Attachment = require('./src/models/media');
 
 let uploadCount = 0;
 

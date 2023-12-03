@@ -28,7 +28,7 @@
                 success: (data) => {
                     let html = '<ul>';
                     data.forEach(media => {
-                        html += `<li>${media.link} - ${media.type}</li>`;
+                        html += `<li>${media.title}</li>`;
                     });
                     html += '</ul>';
                     $('#mediaList').html(html);

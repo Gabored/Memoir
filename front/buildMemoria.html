@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Memorias</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        .memoria-img {
+            width: 50px; /* Ajusta este valor al tamaño que desees */
+            height: auto;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Memorias</h1>
+    <div class="tabs">
+        <div class="tab active" id="allTab">Todas las memorias</div>
+    </div>
+    <input type="text" id="search" placeholder="Buscar por título de memoria">
+    <div id="memoria-list">
+        <div class="memoria-images"></div>
+    </div>
+    
+
+    
+
+    <script>
+        function loadMemorias(query) {
+            let url = 'http://localhost:5001/memorias';
+            if (query) {
+                url = 'http://localhost:5001/memorias/search/' + query;
+            }
+    
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(memoria => {
+                            let html = '';
+                            html += `<div id="memoria-${memoria._id}">`; // Contenedor de cada memoria
+                            html += `<p id="usuario-${memoria._id}">Usuario: Cargando...</p>`; // Mostrará el nombre de usuario
+                            const memoriaId = memoria._id;
+                            $.ajax({
+                                url: `http://localhost:5001/medias/${memoria.media}`,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: (mediaPaths) => {
+                                console.log(mediaPaths);
+                                const imagesHtml = mediaPaths.map(path => `<img src="${path}" alt="Memoria ${memoriaId}">`);
+                                $('.memoria-images').append(imagesHtml.join(''));
+                            },
+
+                                error: (xhr, status, error) => {
+                                    console.error('Error al obtener las imágenes de la memoria:', error);
+                                }
+                            });
+
+                            // Contenedor para los comentarios de la memoria
+                            html += `<div id="comentarios-${memoria._id}"></div>`;
+                            html += `</div>`;
+                            $('#memoria-list').append(html);
+
+                            // Obtener comentarios por memoria
+                            $.ajax({
+                                url: `http://localhost:5001/comments/post/${memoria._id}`,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: (comments) => {
+                                    let comentariosHtml = '';
+                                    if (Array.isArray(comments) && comments.length > 0) {
+                                        comentariosHtml += `<p>Comentarios:</p><ul>`;
+                                        comments.forEach(comment => {
+                                            $.ajax({
+                                                url: `http://localhost:5001/users/${comment.writer_user}`,
+                                                type: 'GET',
+                                                dataType: 'json',
+                                                success: (userData) => {
+                                                    const comentarioHTML = `<li id="comment-${comment._id}">${comment.body} - Usuario: ${userData.username}</li>`;
+                                                    $(`#comentarios-${memoria._id}`).append(comentarioHTML);
+                                                },
+                                                error: (xhr, status, error) => {
+                                                    console.error('Error al obtener el usuario del comentario:', error);
+                                                }
+                                            });
+                                        });
+                                        comentariosHtml += `</ul>`;
+                                    } else {
+                                        comentariosHtml = '<p>No hay comentarios</p>';
+                                    }
+                                    $(`#comentarios-${memoria._id}`).html(comentariosHtml);
+                                },
+                                error: (xhr, status, error) => {
+                                    console.error('Error al obtener los comentarios de la memoria:', error);
+                                }
+                            });
+
+                            //Obtener Usuarios 
+
+                            $.ajax({
+                                url: `http://localhost:5001/users/${memoria.user}`, // Endpoint para obtener usuario por ID
+                                type: 'GET',
+                                dataType: 'json',
+                                success: (userData) => {
+                                    // Actualizar el campo del nombre de usuario
+                                    $(`#usuario-${memoria._id}`).text(`Usuario: ${userData.username}`);
+                                },
+                                error: (xhr, status, error) => {
+                                    console.error('Error al obtener el usuario:', error);
+                                }
+                            });
+                        });
+                    } else {
+                        $('#memoria-list').html('<p>No se encontraron memorias</p>');
+                    }
+                },
+                error: (xhr, status, error) => {
+                    console.error('Error al obtener la lista de memorias:', error);
+                }
+            });
+        }
+
+        $(function(){
+            $('.tab').on('click', function() {
+                $('.tab').removeClass('active');
+                $(this).addClass('active');
+                loadMemorias($('#search').val());
+            });
+
+            $('#search').on('keyup', function(e) {
+                loadMemorias(this.value);
+            });
+        });
+    </script>
+</body>
+</html>

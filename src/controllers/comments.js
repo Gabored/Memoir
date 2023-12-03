@@ -88,6 +88,18 @@ class CommentsController {
                 res.sendStatus(500);
             });
     }
+
+    listarPorMemoria(req, res) {
+        const postId = req.params.post_id;
+        Comment.find({ post_id: postId })
+            .then(comments => {
+                res.send(comments);
+            })
+            .catch(error => {
+                console.error('Error al obtener los comentarios de la memoria:', error);
+                res.sendStatus(500);
+            });
+    }
 }
 
 module.exports = new CommentsController();

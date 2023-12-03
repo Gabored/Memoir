@@ -1,11 +1,13 @@
 const Media = require('./../models/media');
 
 class MediasController {
+
     async ver(req, res) {
         try {
             const media = await Media.findById(req.params.id);
             if (media) {
-                res.send(media);
+                const imagePaths = media.title.map(title => `http://localhost:5001/assets/${title}`);
+                res.send(imagePaths);
             } else {
                 res.sendStatus(404);
             }
@@ -14,6 +16,7 @@ class MediasController {
             res.sendStatus(500);
         }
     }
+    
 
     async listar(req, res) {
         try {
