@@ -32,7 +32,7 @@
             },
             success: function(data) {
                 // Mostrar la información del usuario en el contenedor
-                $('#user-info-container').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+                fillUserData(data);
             },
             error: function(xhr, status, error) {
                 console.error('Error al obtener información del usuario:', error);
@@ -45,6 +45,36 @@
                 }
             }
         });
+
+        function fillUserData(userData) {
+            // Llena los campos con la información del usuario
+            // Asegúrate de tener campos correspondientes en tu objeto de datos (userData)
+            $('#user-info-container').html(`
+                <div class="user-info-field">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" value="${userData.name}" readonly>
+                    <button class="edit" onclick="editField('name')">Editar</button>
+                    <button class="delete" onclick="deleteField('name')">Eliminar</button>
+                </div>
+                <!-- Repite lo anterior para otros campos -->
+            `);
+        }
+
+        function editField(fieldName) {
+            // Habilita la edición del campo
+            $('#' + fieldName).prop('readonly', false);
+        }
+
+        function deleteField(fieldName) {
+            // Implementa la lógica para eliminar el campo (puedes ocultarlo o mostrar un mensaje de confirmación)
+            alert('Campo eliminado: ' + fieldName);
+        }
+
+        function logout() {
+            // Implementa la lógica para cerrar sesión (puedes redirigir al usuario a la página de inicio de sesión)
+            alert('Sesión cerrada');
+            window.location.href = 'login.html';
+        }
     </script>
 </body>
 </html>
