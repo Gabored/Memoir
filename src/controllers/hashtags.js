@@ -19,7 +19,6 @@ class HashtagsController {
     listar(req, res) {
         Hashtag.find()
             .then(response => {
-                console.log('Respuesta: ', response);
                 res.send(response);
             })
             .catch(error => {
