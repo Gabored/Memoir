@@ -11,6 +11,14 @@
     <h1>Lista de Memorias</h1>
     <div id="memoria-list"></div>
 
+    <!-- Agrega un cuadro modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div id="userInfo"></div>
+        </div>
+    </div>
+
     <script>
         function loadMemorias() {
             let url = 'http://localhost:5001/memorias';
@@ -32,15 +40,19 @@
                             // Contenedor para los comentarios de la memoria
                             const comentariosContainer = $(`<div class="comentarios" id="comentarios-${memoria._id}"></div>`);
 
-                            memoriaContainer.append(`<p id="usuario-${memoria._id}">Usuario: Cargando...</p>`); // Mostrará el nombre de usuario
+                            // Agregar el contenedor de la memoria a la lista
+                            $('#memoria-list').append(memoriaContainer);
+
+                            // Crear un elemento span para el nombre de usuario
+                            const usernameSpan = $(`<span class="clickable-username" data-user-id="${memoria.user}"></span>`);
+                            memoriaContainer.append(`<p>Usuario: </p>`);
+                            memoriaContainer.find('p').append(usernameSpan);
+
                             memoriaContainer.append(`<p><strong>${memoria.title}</strong></p>`); // Mostrará el título de la memoria
                             memoriaContainer.append(`<p>${memoria.body}</p>`); // Mostrará el cuerpo de la memoria
                             memoriaContainer.append(`<p><strong>#</strong><span id="hashtag-${memoria._id}"></span></p>`); // Mostrará el hashtag
                             memoriaContainer.append(imagesContainer);
                             memoriaContainer.append(comentariosContainer);
-
-                            // Agregar el contenedor de la memoria a la lista
-                            $('#memoria-list').append(memoriaContainer);
 
                             // Obtener imágenes de la memoria
                             $.ajax({
@@ -116,7 +128,11 @@
                                 type: 'GET',
                                 dataType: 'json',
                                 success: (userData) => {
-                                    $(`#usuario-${memoria._id}`).text(`${userData.username}`);
+                                    // Actualizar el texto del nombre de usuario
+                                    usernameSpan.text(userData.username);
+
+                                    // Agregar el evento de clic al nombre de usuario
+                                    usernameSpan.addClass('clickable-username').attr('data-user-id', memoria.user);
                                 },
                                 error: (xhr, status, error) => {
                                     console.error('Error al obtener el usuario:', error);
@@ -135,7 +151,55 @@
 
         $(document).ready(function(){
             loadMemorias();
+
+            // Agrega un evento de clic al nombre de usuario
+            $(document).on('click', '.clickable-username', function() {
+                const userId = $(this).data('user-id');
+                mostrarVentanaUsuario(userId);
+            });
+
+            // Agrega un evento de clic al botón de cierre del modal
+            $('#closeModal').on('click', function() {
+                cerrarModal();
+            });
         });
+
+        function mostrarVentanaUsuario(userId) {
+            // Hacer una solicitud AJAX para obtener los datos del usuario
+            $.ajax({
+                url: `http://localhost:5001/users/${userId}`,
+                type: 'GET',
+                dataType: 'json',
+                success: (userData) => {
+                    // Construir el contenido del modal con la información del usuario
+                    const userInfoHtml = `
+                        <p><strong>Nombre:</strong> ${userData.name}</p>
+                        <p><strong>Apellido:</strong> ${userData.surname}</p>
+                        <p><strong>Correo Electrónico:</strong> ${userData.email || 'No disponible'}</p>
+                        <p><strong>Ubicación:</strong> ${userData.location || 'No disponible'}</p>
+                        <p><strong>Intereses:</strong> ${userData.interests || 'No disponible'}</p>
+                        <!-- Agrega más campos según sea necesario -->
+                    `;
+
+                    // Mostrar la información en el modal
+                    $('#userInfo').html(userInfoHtml);
+                    abrirModal();
+                },
+                error: (xhr, status, error) => {
+                    console.error('Error al obtener los datos del usuario:', error);
+                }
+            });
+        }
+
+        function abrirModal() {
+            // Mostrar el modal
+            $('#myModal').css('display', 'block');
+        }
+
+        function cerrarModal() {
+            // Cerrar el modal
+            $('#myModal').css('display', 'none');
+        }
     </script>
 </body>
 </html>
