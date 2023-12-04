@@ -31,7 +31,7 @@ app.use('/assets', express.static(path.join(__dirname, 'uploads')));
 
 // PRUEBA
 app.get('', (req, res) => {
-    const uri = path.join(__dirname, 'front', 'index.html');
+    const uri = path.join(__dirname, 'front', 'signup.html');
     res.sendFile(uri);
 })
 

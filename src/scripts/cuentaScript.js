@@ -92,6 +92,7 @@ $(function () {
                 },
                 success: function (response) {
                     alert('Cambios guardados correctamente');
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr);
