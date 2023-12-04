@@ -1,0 +1,76 @@
+#header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff; /* Puedes ajustar el color de fondo según tus preferencias */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Asegúrate de que el contenedor esté en capas superiores */
+}
+
+#header-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#add-hashtag-image {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+}
+
+#add-hashtag-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#add-hashtag-image:hover,
+#add-hashtag-message:hover {
+    color: red;
+}
+
+.hashtag-img {
+    width: 300px;
+    height: auto;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.hashtag-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#hashtag-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.hashtag-item {
+    position: relative;
+}
+
+#create-hashtag-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    padding-top: 150px; /* Ajusta según la altura del encabezado */
+}
