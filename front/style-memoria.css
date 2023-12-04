@@ -11,12 +11,29 @@
 }
 
 .memoria-images img {
-    width: 100px; /* Puedes cambiar esto si deseas un tamaño diferente para las imágenes dentro de .memoria-images */
+    width: 100%;
     height: auto;
-    margin-right: 5px;
+    max-width: 200px; /* Cambia el tamaño máximo según tus preferencias */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px; /* Agrega espacio entre las imágenes */
 }
+
 
 .comentarios li {
     list-style-type: none;
     margin-bottom: 5px;
+}
+
+.comentarios-list {
+    padding: 0;
+}
+
+.comentarios li {
+    list-style-type: none;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
