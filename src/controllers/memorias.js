@@ -10,7 +10,7 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
     // Filter memorias by title
     search(req, res) {
         const title = req.params.query;
-        Memoria.find({ title : new RegExp(title, 'i') })
+        Memoria.find({ title: new RegExp(title, 'i') })
             .then(memorias => {
                 res.send(memorias);
             })
@@ -70,20 +70,7 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
         })
     }
 
-    // Explorar
-    // Filter memorias by hashtag
-    searchExplorar(req, res) {
-        const hashtagId = req.params.hashtag; // Modifica aquí para obtener el id del hashtag
-        Memoria.find({ hashtag: { $in: [hashtagId] } })
-            .then(memorias => {
-                res.send(memorias);
-            })
-            .catch(error => {
-                console.error('Error al buscar las memorias', error);
-                res.sendStatus(500);
-            });
-    }
-
+    
 }
 
 module.exports = new MemoriasController();
