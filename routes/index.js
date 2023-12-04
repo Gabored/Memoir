@@ -66,6 +66,7 @@ router.delete('/medias/:id', mediasController.eliminar);
 
 //router.get('/hashtags', authMiddleware);
 // CRUD HASHTAGS
+router.get('/hashtags/:id', hashtagsController.ver);
 router.get('/hashtags', hashtagsController.listar);
 router.get('/hashtags/search/:name', hashtagsController.search);
 router.post('/hashtags', hashtagsController.crear);

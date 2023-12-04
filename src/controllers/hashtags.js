@@ -2,6 +2,24 @@ const Hashtag = require('./../models/hashtag');
 
 class HashtagsController {
 
+    // Obtiene un usuario por su ID
+    ver(req, res) {
+        const id = req.params.id;
+        // Utiliza el método findById de Mongoose
+        Hashtag.findById(id)
+            .then(hashtag => {
+                if (hashtag) {
+                    res.send(hashtag);
+                } else {
+                    res.sendStatus(404);
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener el hashtag', error);
+                res.sendStatus(500);
+            });
+    }
+
     // Filter hashtags by name
     search(req, res) {
         const name = req.params.name;

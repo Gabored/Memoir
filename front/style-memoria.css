@@ -1,0 +1,22 @@
+.memoria-img {
+    width: 100px;
+    height: auto;
+}
+
+.memoria-container {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.memoria-images img {
+    width: 100px; /* Puedes cambiar esto si deseas un tamaño diferente para las imágenes dentro de .memoria-images */
+    height: auto;
+    margin-right: 5px;
+}
+
+.comentarios li {
+    list-style-type: none;
+    margin-bottom: 5px;
+}
