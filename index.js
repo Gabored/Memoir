@@ -78,9 +78,16 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    const isValid = file.mimetype.startsWith('image/');
-    cb(null, isValid);
-}
+    const allowedTypes = ['image', 'audio', 'video'];
+
+    // Verificar si el tipo de archivo está permitido
+    const fileType = file.mimetype.split('/')[0];
+    if (allowedTypes.includes(fileType)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Tipo de archivo no admitido'));
+    }
+};
 
 const uploadMiddleware = multer({storage, fileFilter});
 
