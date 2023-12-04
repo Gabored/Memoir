@@ -88,22 +88,59 @@ $(document).ready(function() {
                         }
                     }
 
-                    const nuevaMemoria = {
-                        user: userID,
-                        title: $form.find('input[name="titulo"]').val(),
-                        body: $form.find('input[name="descripcion"]').val(),
-                        hashtag: idComments,
-                        media: mediaSubida._id
-                    };
+                    const promises = [];
 
-                    console.log(nuevaMemoria);
+                    for (const seleccionado in hashtagsSeleccionados) {
+                        const hashtag = hashtagsSeleccionados[seleccionado];
+                        const promise = new Promise((resolve, reject) => {
+                            $.ajax({
+                                url: `http://localhost:5001/hashtags/search/${hashtag}`,
+                                type: 'GET',
+                                success: (hashtagData) => {
+                                    console.log("Hashtag obtenido:", hashtagData);
+                                    resolve(hashtagData[0]._id);
+                                },
+                                error: () => {
+                                    console.error('Error obteniendo los hashtags');
+                                    reject();
+                                }
+                            });
+                        });
+                        promises.push(promise);
+                    }
 
-                    const memoriaResponse = await $.ajax({
-                        url: 'http://localhost:5001/memorias',
-                        type: 'POST',
-                        data: nuevaMemoria,
-                        dataType: 'json'
-                    });
+                    let nuevaMemoriaJSON ;
+                            
+
+                    Promise.all(promises)
+                        .then((ids) => {
+                            console.log('IDs de los hashtags:', ids);
+                       
+
+                            // Crear objeto de Memoria con los datos recolectados
+                            const nuevaMemoria = {
+                                user: "6563983db13a3cbac2335143",
+                                title: $form.find('input[name="titulo"]').val(),
+                                body: $form.find('input[name="descripcion"]').val(),
+                                hashtag: ids,
+                                media: mediaSubida._id
+                            };
+
+                            nuevaMemoriaJSON = JSON.stringify(nuevaMemoria);
+                            console.log(nuevaMemoriaJSON)
+                            
+
+                            const memoriaResponse = $.ajax({
+                                url: 'http://localhost:5001/memorias',
+                                type: 'POST',
+                                data: nuevaMemoriaJSON,
+                                dataType: 'json'
+                            });
+                })
+                .catch((error) => {
+                    console.error('Error al obtener los IDs de los hashtags:', error);
+                    // Manejar el error apropiadamente
+                });
 
                     alert('Memoria creada exitosamente');
                 } catch (error) {
