@@ -29,16 +29,39 @@ app.use('', userRoutes);
 
 app.use('/assets', express.static(path.join(__dirname, 'uploads')));
 
+app.use('/media', express.static(path.join(__dirname, 'media')));
+
+app.use('/front', express.static(path.join(__dirname, 'front')));
+
+app.use('/src', express.static(path.join(__dirname, 'src')));
+
 // PRUEBA
 app.get('', (req, res) => {
     const uri = path.join(__dirname, 'front', 'signup.html');
     res.sendFile(uri);
 })
-
+app.get('/login', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'login.html');
+    res.sendFile(uri);
+})
+app.get('/index', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'index.html');
+    res.sendFile(uri);
+})
 app.get('/crear-memoria', (req, res) => {
     const uri = path.join(__dirname, 'front', 'crear-memoria.html');
     res.sendFile(uri);
 })
+app.get('/explorar', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'explorar.html');
+    res.sendFile(uri);
+})
+
+app.get('/cuenta', (req, res) => {
+    const uri = path.join(__dirname, 'front', 'cuenta.html');
+    res.sendFile(uri);
+})
+
 
 // Ruta de prueba
 /* app.get('', (req, res) => {

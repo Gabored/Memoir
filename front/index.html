@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style-index.css">
+    <link rel="stylesheet" href="front/style-index.css">
     <title>Memoir - Inicio</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
@@ -14,16 +14,16 @@
                 <i class="fas fa-italic">Memoir</i>
             </div>
             <ul class="sidebar-menu">
-                <li><img src="..\media\casa-icon.png" alt="Inicio"><span>Inicio</span></li>
-                <li id="cuenta"><img src="..\media\user-icon.png" alt="Cuenta"><span>Cuenta</span></li>
-                <li><img src="..\media\config-icon.png" alt="Configuración"><span>Configuración</span></li>
+                <li><img src="/media/casa-icon.png" alt="Inicio"><span>Inicio</span></li>
+                <li id="cuenta"><img src="/media/user-icon.png" alt="Cuenta"><span>Cuenta</span></li>
+                <li><img src="/media/config-icon.png" alt="Configuración"><span>Configuración</span></li>
             </ul>
         </div>
         <div class="main-content">
             <!-- Contenido de la página principal -->
             <header class="main-header">
-                <a href="crear-memoria.html"> 
-                    <img id="add-icon" src="..\media\add-icon.png" alt="Crear memoria">
+                <a href="/crear-memoria"> 
+                    <img id="add-icon" src="/media/add-icon.png" alt="Crear memoria">
                 </a>
             </header>
             <!-- Inicio de la sección de memoria -->
@@ -39,7 +39,7 @@
         </div>
         <ul class="sidebar-right-menu">
             <li>
-                <img src="..\media\lupa-icon.png" alt="Buscar">
+                <img src="/media/lupa-icon.png" alt="Buscar">
                 <span>Buscar</span>
                 <input type="text" id="searchHashtag" placeholder="Buscar hashtag">
             </li>
@@ -47,8 +47,8 @@
                 <div id="filteredHashtags"></div>
             </li>
             <li>
-                <a href="explorar.html">
-                    <img src="..\media\mundo-icon.png" alt="Explorar">
+                <a href="/explorar">
+                    <img src="./media/mundo-icon.png" alt="Explorar">
                     <span>Explorar</span>
                 </a>
             </li>
@@ -246,7 +246,7 @@
             // Manejar clic en "Cuenta"
             $('#cuenta').on('click', function() {
                 // Redirigir a la página "cuenta.html"
-                window.location.href = 'cuenta.html';
+                window.location.href = '/cuenta';
             });
         });
 

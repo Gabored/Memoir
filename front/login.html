@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memoir Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style-login.css">
+    <link rel="stylesheet" href="front/style-login.css">
 </head>
 <body style="display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;">
     <video autoplay muted loop id="background-video">
-        <source src="..\media\login.mp4" type="video/mp4">
+        <source src="/media/login.mp4" type="video/mp4">
     </video>
     <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
@@ -71,7 +71,7 @@
                     localStorage.setItem('userId', data.userId || data._id);
                     console.log('Token almacenado:', data.token);
                     console.log('UserId almacenado:', data.userId || data._id);
-                    window.location.href = "index.html";
+                    window.location.href = "index";
                 }
             })
             .catch(error => {

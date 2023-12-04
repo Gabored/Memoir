@@ -6,11 +6,11 @@
     <title>Memoir Sign Up</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style-signup.css">
+    <link rel="stylesheet" href="front/style-signup.css">
 </head>
 <body style="display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;">
     <video autoplay muted loop id="background-video">
-        <source src="..\media\signup.mp4" type="video/mp4">
+        <source src="/media/signup.mp4" type="video/mp4">
     </video>
     <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
@@ -45,7 +45,7 @@
                         <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                     </form>
 
-                    <p class="text-center">Already have an account? <a href="login.html">Login</a></p>
+                    <p class="text-center">Already have an account? <a href="/login">Login</a></p>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@
                     data: JSON.stringify(userData),
                     contentType: 'application/json',
                     success: () => {
-                        window.location.href = "login.html";
+                        window.location.href = "login";
                     },
                     error: () => {
                         alert('Error al crear el usuario');
