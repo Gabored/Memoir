@@ -18,6 +18,36 @@
     
     <div id="hashtag-list"></div>
 
+    <!-- Sección de detalles de hashtag -->
+    <div id="hashtag-details" style="display: none;">
+        <img id="selected-hashtag-image" src="" alt="Hashtag Seleccionado" style="width: 300px; height: auto;">
+        <button id="edit-hashtag-button" onclick="showEditHashtagForm()">Editar Hashtag</button>
+        <button id="delete-hashtag-button" onclick="showDeleteHashtagConfirmation()">Borrar Hashtag</button>
+    </div>
+
+    <!-- Formulario para editar hashtag -->
+    <div id="edit-hashtag-form" style="display: none;">
+        <h2>Editar Hashtag</h2>
+        <label for="edit-hashtag-title">Nuevo título del Hashtag:</label>
+        <input type="text" id="edit-hashtag-title" required>
+
+        <label for="edit-hashtag-image">Nuevo enlace de la imagen:</label>
+        <input type="text" id="edit-hashtag-image" required>
+
+        <div id="edit-hashtag-message" style="color: red;"></div>
+
+        <button type="button" onclick="editHashtag()">Guardar Cambios</button>
+        <button type="button" onclick="cancelEdit()">Cancelar</button>
+    </div>
+
+    <!-- Confirmación de borrado de hashtag -->
+    <div id="delete-hashtag-confirmation" style="display: none;">
+        <div id="delete-hashtag-message" style="color: red;"></div>
+        <p>¿Seguro que quieres borrar este hashtag?</p>
+        <button type="button" onclick="deleteHashtag()">Sí</button>
+        <button type="button" onclick="cancelDelete()">No</button>
+    </div>
+
     <!-- Formulario para crear hashtag -->
     <div id="create-hashtag-form">
         <h2>Crea tu propio hashtag</h2>
@@ -33,81 +63,177 @@
     </div>
 
     <script>
-    function loadHashtags() {
-        let url = 'http://localhost:5001/hashtags';
+        function loadHashtags() {
+            let url = 'http://localhost:5001/hashtags';
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            dataType: 'json',
-            success: (data) => {
-                let html = '';
-                if (Array.isArray(data) && data.length > 0) {
-                    data.forEach(hashtag => {
-                        html += `<div class="hashtag-item">`;
-                        html += `<img class="hashtag-img" src="${hashtag.img}" alt="${hashtag.name}">`;
-                        html += `<span class="hashtag-name">${hashtag.name}</span>`;
-                        html += `</div>`;
-                    });
-                } else {
-                    html = '<p>No se encontraron hashtags</p>';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    let html = '';
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(hashtag => {
+                            html += `<div class="hashtag-item" onclick="showHashtagDetails('${hashtag._id}', '${hashtag.img}')">`;
+                            html += `<img class="hashtag-img" src="${hashtag.img}" alt="${hashtag.name}">`;
+                            html += `<span class="hashtag-name">${hashtag.name}</span>`;
+                            html += `</div>`;
+                        });
+                    } else {
+                        html = '<p>No se encontraron hashtags</p>';
+                    }
+                    $('#hashtag-list').html(html);
+                },
+                error: (xhr, status, error) => {
+                    console.error('Error al obtener la lista de hashtags:', error);
                 }
-                $('#hashtag-list').html(html);
-            },
-            error: (xhr, status, error) => {
-                console.error('Error al obtener la lista de hashtags:', error);
-            }
-        });
-    }
+            });
+        }
 
-    // CREAR HASHTAG
-    function showCreateHashtagForm() {
-            // Muestra el formulario de creación de hashtag
+        function showHashtagDetails(hashtagId, imgSrc) {
+            $('#selected-hashtag-image').attr('src', imgSrc);
+            $('#edit-hashtag-button').attr('data-id', hashtagId); // Guardar el ID del hashtag en el botón
+            $('#delete-hashtag-button').attr('data-id', hashtagId); // Guardar el ID del hashtag en el botón de borrar
+            $('#hashtag-details').show();
+        }
+
+        function editHashtag() {
+            // Obtener el ID del hashtag desde el botón
+            var hashtagId = $('#edit-hashtag-button').attr('data-id');
+
+            // Obtener los nuevos datos desde el usuario
+            var newTitle = $('#edit-hashtag-title').val();
+            var newImage = $('#edit-hashtag-image').val();
+
+            // Verificar si se ingresaron nuevos datos
+            if (newTitle.trim() !== '' && newImage.trim() !== '') {
+                // Datos a enviar al servidor
+                var newData = {
+                    name: newTitle,
+                    img: newImage
+                };
+
+                // Hacer la solicitud PUT al servidor
+                $.ajax({
+                    url: 'http://localhost:5001/hashtags/' + hashtagId,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(newData),
+                    success: function(response) {
+                        console.log(response);
+                        loadHashtags();
+                        $('#edit-hashtag-form').hide();
+                        $('#hashtag-details').show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al editar el hashtag:', error);
+                        $('#edit-hashtag-message').text('Error al editar el hashtag. Por favor, intenta nuevamente.');
+                    }
+                });
+            } else {
+                $('#edit-hashtag-message').text('Por favor, completa todos los campos.');
+            }
+        }
+
+        function deleteHashtag() {
+            // Obtener el ID del hashtag desde el botón
+            var hashtagId = $('#delete-hashtag-button').attr('data-id');
+
+            // Hacer la solicitud DELETE al servidor
+            $.ajax({
+                url: 'http://localhost:5001/hashtags/' + hashtagId,
+                type: 'DELETE',
+                success: function(response) {
+                    console.log(response);
+                    loadHashtags();
+                    // Ocultar la sección de detalles después del borrado
+                    $('#hashtag-details').hide();
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al borrar el hashtag:', error);
+                    alert('Error al borrar el hashtag. Por favor, intenta nuevamente.');
+                    // Ocultar la sección de detalles en caso de error
+                    $('#hashtag-details').hide();
+                }
+            });
+        }
+
+        function showCreateHashtagForm() {
             document.getElementById("create-hashtag-form").style.display = "block";
         }
 
-    function createHashtag() {
-        var title = document.getElementById("hashtag-title").value;
-        var image = document.getElementById("hashtag-image").value;
+        function createHashtag() {
+            var title = document.getElementById("hashtag-title").value;
+            var image = document.getElementById("hashtag-image").value;
 
-        // Validar que los campos no estén vacíos
-        if (!title || !image) {
-            alert("Por favor, completa todos los campos.");
-            return;
+            if (!title || !image) {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            var hashtagData = {
+                name: title,
+                img: image
+            };
+
+            $.ajax({
+                url: 'http://localhost:5001/hashtags',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(hashtagData),
+                success: function(response) {
+                    console.log(response);
+                    loadHashtags();
+                    document.getElementById("create-hashtag-form").style.display = "none";
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al crear el hashtag:', error);
+                    alert('Error al crear el hashtag. Por favor, intenta nuevamente.');
+                }
+            });
         }
 
-        // Datos a enviar al servidor
-        var hashtagData = {
-            name: title,
-            img: image
-        };
+        function showEditHashtagForm() {
+            // Mostrar el formulario de edición
+            $('#edit-hashtag-form').show();
+            // Ocultar la sección de detalles
+            $('#hashtag-details').hide();
 
-        // Enviar la solicitud al servidor
-        $.ajax({
-            url: 'http://localhost:5001/hashtags',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(hashtagData),
-            success: function(response) {
-                // Manejar la respuesta del servidor, si es necesario
-                console.log(response);
+            // Obtener la información del hashtag seleccionado
+            var hashtagId = $('#edit-hashtag-button').attr('data-id');
+            var hashtagName = getHashtagNameById(hashtagId); // Necesitas implementar esta función
 
-                // Opcional: Recargar la lista de hashtags después de crear uno nuevo
-                loadHashtags();
+            // Prellenar el formulario con la información actual del hashtag
+            $('#edit-hashtag-title').val(hashtagName);
+            $('#edit-hashtag-image').val(getHashtagImageById(hashtagId)); // Necesitas implementar esta función
+        }
 
-                // Ocultar el formulario después de crear el hashtag
-                document.getElementById("create-hashtag-form").style.display = "none";
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al crear el hashtag:', error);
-                alert('Error al crear el hashtag. Por favor, intenta nuevamente.');
-            }
-        });
-    }
+        function cancelEdit() {
+            // Ocultar el formulario de edición
+            $('#edit-hashtag-form').hide();
+            // Mostrar la sección de detalles
+            $('#hashtag-details').show();
+        }
+
+        function showDeleteHashtagConfirmation() {
+            // Mostrar la confirmación de borrado
+            $('#delete-hashtag-confirmation').show();
+            // Ocultar la sección de detalles
+            $('#hashtag-details').hide();
+        }
+
+        function cancelDelete() {
+            // Ocultar la confirmación de borrado
+            $('#delete-hashtag-confirmation').hide();
+            // Mostrar la sección de detalles
+            $('#hashtag-details').show();
+        }
 
         $(function(){
-            loadHashtags(); // Carga los hashtags al iniciar la página
+            loadHashtags();
         });
+
     </script>
 </body>
 </html>
