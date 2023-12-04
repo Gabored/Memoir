@@ -42,7 +42,6 @@ router.put('/edit-account/:id', authMiddleware, usersController.editar);
 //router.get('/memorias', authMiddleware, memoriasController.listar);
 router.get('/memorias', memoriasController.listar);
 router.get('/memorias/search/:query', memoriasController.search);
-router.get('/memorias/searchExplorar/:hashtag', memoriasController.searchExplorar);
 router.post('/memorias', memoriasController.crear);
 router.put('/memorias/:id', memoriasController.editar);
 router.delete('/memorias/:id', memoriasController.eliminar);

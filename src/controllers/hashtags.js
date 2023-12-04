@@ -40,10 +40,10 @@ class HashtagsController {
             });
     }
 
-    // Edit a hashtag by its ID
+    // Edit a hashtag by its name
     editar(req, res) {
-        const id = req.params.id;
-        Hashtag.findByIdAndUpdate(id, req.body)
+        const nombre = req.params.nombre;
+        Hashtag.findOneAndUpdate({ nombre: nombre }, req.body)
             .then(() => {
                 res.send({ message: 'Hashtag editado exitosamente' });
             })
@@ -53,10 +53,10 @@ class HashtagsController {
             });
     }
 
-    // Delete a hashtag by its ID
+    // Delete a hashtag by its name
     eliminar(req, res) {
-        const id = req.params.id;
-        Hashtag.findByIdAndDelete(id)
+        const nombre = req.params.nombre;
+        Hashtag.findOneAndDelete({ nombre: nombre })
             .then(() => {
                 res.send({ message: 'Hashtag eliminado exitosamente' });
             })
