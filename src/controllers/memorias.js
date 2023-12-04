@@ -31,8 +31,31 @@ class MemoriasController { // estructura para que puedas hacer varios metodos
     }
 
     crear(req, res) {
-        res.send(memorias[0]);
+        // Obtiene los datos de la memoria del cuerpo de la solicitud
+        const { user, title, body, hashtag, media } = req.body;
+    
+        // Crea una nueva instancia de Memoria usando el modelo
+        const nuevaMemoria = new Memoria({
+            user,
+            title,
+            body,
+            hashtag,
+            media
+        });
+    
+        // Guarda la nueva memoria en la base de datos
+        nuevaMemoria.save()
+            .then(savedMemoria => {
+                // Devuelve la memoria recién creada como respuesta
+                res.send(savedMemoria);
+            })
+            .catch(error => {
+                console.error('Error al crear una nueva memoria', error);
+                res.sendStatus(500);
+            });
     }
+    
+    
 
     editar(req, res) {
         res.send(memorias[0]);

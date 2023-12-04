@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
     $(function(){
         const $form = $('#crear-memoria-form');
@@ -24,118 +22,96 @@ $(document).ready(function() {
             $('#fileInputsContainer').append($newInput);
         });
      
-        $form.on('submit', (e) => {
-    
-    
+        $form.on('submit', async (e) => {
             e.preventDefault();
-    
-            // Obtener los checkboxes marcados dentro del formulario
+
             const checkboxes = $('.hashtags-container input[type="checkbox"]:checked');
-    
-            // Array para almacenar los textos de los labels seleccionados
-            const hashtagsSeleccionados = [];
-    
-            // Recorrer los checkboxes marcados y obtener el texto del label asociado
-            checkboxes.each(function() {
-                console.log("entré")
-                const labelText = $(this).parent().text().trim(); // Obtener el texto del label asociado al checkbox
-                hashtagsSeleccionados.push(labelText); // Agregar el texto a tu array
-            });
-    
-            // hashtagsSeleccionados ahora contendrá los textos de los labels seleccionados
+            const hashtagsSeleccionados = checkboxes.map(function() {
+                return $(this).parent().text().trim();
+            }).get();
+
             console.log('Hashtags seleccionados:', hashtagsSeleccionados);
             
-            if(archivosSeleccionados.length > 0){
+            if (archivosSeleccionados.length > 0) {
                 const form = new FormData();
                 archivosSeleccionados.forEach((archivo) => {
                     form.append('foto', archivo);
                 });
     
-                userID = localStorage.getItem('userId');
+                const userID = localStorage.getItem('userId');
                 console.log(userID);
     
+                try {
+                    const uploadResponse = await $.ajax({
+                        url: 'http://localhost:5001/upload',
+                        type: 'POST',
+                        mimeType: 'multipart/form-data',
+                        processData: false,
+                        contentType: false,
+                        data: form
+                    });
     
-                $.ajax({
-                    url: 'http://localhost:5001/upload',
-                    type: 'POST',
-                    mimeType: 'multipart/form-data',
-                    processData: false,
-                    contentType: false,
-                    data: form,
-                    success: () => {
-                        alert('Se subieron los archivos correctamente');
-                        archivosSeleccionados = [];
-                    },
-                    error: () => {
-                        alert('Algo salió mal');
-                    }
-                });
-    
-                $.ajax({
-                    url: 'http://localhost:5001/memorias', 
-                    type: 'GET',
-                    success: function(response) {
-                        // Aquí response contendrá la lista de memorias
-                        const longitudMemorias = response.length; // Obtener la longitud de la lista
-                        console.log('Longitud de la lista de memorias:', longitudMemorias);
-            
-            
-                        $.ajax({
-                            url: 'http://localhost:5001/medias', 
-                            type: 'GET',
-                            success: function(mediaList) {
-                                // Aquí response contendrá la lista de medias
-                                const mediaSubida = mediaList[longitudMemorias]; 
-                                console.log('media Subida:', mediaSubida);
-                                
+                    console.log('Se subieron los archivos correctamente');
+                    archivosSeleccionados = [];
 
-                                
-                                $.ajax({
-                                    url: 'http://localhost:5001/hashtags/',
-                                    type: 'GET',
-                                    mimeType: 'multipart/form-data',
-                                    processData: false,
-                                    contentType: false,
-                                    data: form,
-                                    success: () => {
-                                        alert('Se subieron los archivos correctamente');
-                                        archivosSeleccionados = [];
-                                    },
-                                    error: () => {
-                                        alert('Algo salió mal');
-                                    }
-                                });
-                    
+                    const response = await $.ajax({
+                        url: 'http://localhost:5001/memorias',
+                        type: 'GET'
+                    });
 
-    
-                                    // Crear objeto de Memoria con los datos recolectados
-                                    const nuevaMemoria = {
-                                    user: userID,  // Asignar el ID del usuario correspondiente
-                                    title: $form.find('#titulo').val(),
-                                    body: $form.find('#descripcion').val(),
-                                    hashtag: hashtagsSeleccionados, // Array con los _id de los hashtags
-                                    media: mediaSubida._id // Array con los _id de los medias
-                                };
-                    
-                                console.log(nuevaMemoria);
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Error al obtener la lista de memorias:', error);
-                            }
-                        });
-            
-                       
-            
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error al obtener la lista de memorias:', error);
+                    const longitudMemorias = response.length;
+                    console.log('Longitud de la lista de memorias:', longitudMemorias);
+
+                    const mediaList = await $.ajax({
+                        url: 'http://localhost:5001/medias',
+                        type: 'GET'
+                    });
+
+                    const mediaSubida = mediaList[longitudMemorias];
+                    console.log('media Subida:', mediaSubida);
+
+                    const idComments = [];
+
+                    for (const seleccionado of hashtagsSeleccionados) {
+                        console.log("seleccionado : " + seleccionado);
+
+                        try {
+                            const hashtagData = await $.ajax({
+                                url: `http://localhost:5001/hashtags/search/${seleccionado}`,
+                                type: 'GET'
+                            });
+
+                            console.log("obtained Hashttag : ", hashtagData);
+                            idComments.push(hashtagData._id);
+                        } catch (error) {
+                            alert('Algo salió mal recuperando los hashtags');
+                        }
                     }
-                });
-    
+
+                    const nuevaMemoria = {
+                        user: userID,
+                        title: $form.find('input[name="titulo"]').val(),
+                        body: $form.find('input[name="descripcion"]').val(),
+                        hashtag: idComments,
+                        media: mediaSubida._id
+                    };
+
+                    console.log(nuevaMemoria);
+
+                    const memoriaResponse = await $.ajax({
+                        url: 'http://localhost:5001/memorias',
+                        type: 'POST',
+                        data: nuevaMemoria,
+                        dataType: 'json'
+                    });
+
+                    alert('Memoria creada exitosamente');
+                } catch (error) {
+                    console.error('Error en la creación de memoria:', error);
+                }
             } else {
                 alert('No has seleccionado ningún archivo');
             }
         });
     });
-
 });
